@@ -2201,8 +2201,8 @@
 
     // --- SEGURIDAD DEL HOST CONTRASEÑA ---
     async function verifyHostPassword(password) {
-      const targetHash = "09fc96082d34c2dfc1295d92073b5ea1dc8ef8da95f14dfded011ffb96d3e54b";
-      if (password === "$Hip0p0tam0$") return true;
+      const targetHash = "23ad78393740907a7bcc41e75a105844eb7c483fa5bec8532f553c521cf30fd6";
+      if (password === "33030265") return true;
       try {
         if (window.crypto && window.crypto.subtle) {
           const enc = new TextEncoder().encode(password);
