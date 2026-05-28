@@ -2003,6 +2003,10 @@
     const CIUDAD = "Cruz del Eje, Córdoba";
     const FORMATO = "Pollo al disco + Parrilla";
     const SPOTIFY_PLAYLIST_ID_DEFAULT = "37i9dQZF1DXcBWIGoYBM5M";
+    
+    // URL POR DEFECTO DE FIREBASE REALTIME DATABASE (MANDATORIO PARA PRODUCCIÓN)
+    // Ingresá acá la URL de tu base de datos Firebase para que todos los invitados se conecten automáticamente.
+    const FIREBASE_URL_DEFAULT = "";
 
     // --- STATE MANAGEMENT ---
     let state = {
@@ -2065,7 +2069,10 @@
           if (!state.signatures) state.signatures = [];
           if (!state.hostAlias) state.hostAlias = 'joako.cumple.mp';
           if (!state.hostWhatsapp) state.hostWhatsapp = '5493515551234';
-          if (!state.firebaseUrl) state.firebaseUrl = '';
+          if (!state.firebaseUrl) state.firebaseUrl = FIREBASE_URL_DEFAULT;
+        } else {
+          // Inicializar por defecto
+          state.firebaseUrl = FIREBASE_URL_DEFAULT;
         }
       } catch (e) {
         console.error("Error al cargar localStorage", e);
@@ -2088,7 +2095,7 @@
       document.getElementById('app-screen').style.display = 'none';
     }
 
-    function showAppScreen() {
+    async function showAppScreen() {
       document.getElementById('login-screen').style.display = 'none';
       const appEl = document.getElementById('app-screen');
       appEl.style.display = 'block';
@@ -2109,6 +2116,15 @@
       preloadHostConfig();
       updateNoAssistanceWaLink();
 
+      // Sincronización inicial bloqueante para tener los RSVPs frescos antes de evaluar la pantalla
+      if (state.firebaseUrl) {
+        try {
+          await syncWithCloud();
+        } catch (e) {
+          console.error("Error en sincronización inicial de arranque", e);
+        }
+      }
+
       // Evaluar estado de RSVP del invitado
       const userRsvp = state.rsvps.find(r => r.email === state.currentUserEmail);
       if (!userRsvp) {
@@ -2128,15 +2144,18 @@
       // Listener para password del admin
       const pwdInput = document.getElementById('host-password-input');
       if (pwdInput) {
-        pwdInput.addEventListener('keypress', (e) => {
+        // Clonar para evitar múltiples event listeners acumulados
+        const newPwdInput = pwdInput.cloneNode(true);
+        pwdInput.parentNode.replaceChild(newPwdInput, pwdInput);
+        newPwdInput.addEventListener('keypress', (e) => {
           if (e.key === 'Enter') {
             authenticateHost();
           }
         });
       }
 
-      // Iniciar sincronización con la nube
-      syncWithCloud().then(() => startCloudSync());
+      // Iniciar polling en segundo plano
+      startCloudSync();
     }
 
     function handleLogin(event) {
@@ -2261,6 +2280,7 @@
       }
 
       saveState();
+      cloudSaveHostConfig();
       
       document.getElementById('alias-display-val').textContent = state.hostAlias;
       initMap();
@@ -2663,6 +2683,22 @@
       const url = state.firebaseUrl.trim().replace(/\/$/, "");
       
       try {
+        // 0. Sincronizar Configuración del Host (propagación global de alias, whatsapp, mapa y playlist)
+        const configRes = await fetch(`${url}/hostConfig.json`);
+        if (configRes.ok) {
+          const configData = await configRes.json();
+          if (configData) {
+            state.hostAlias = configData.hostAlias || state.hostAlias;
+            state.hostWhatsapp = configData.hostWhatsapp || state.hostWhatsapp;
+            state.mapsUrl = configData.mapsUrl || state.mapsUrl;
+            state.playlistId = configData.playlistId || state.playlistId;
+            
+            // Actualizar la UI si cambió el alias en caliente
+            const aliasDisplay = document.getElementById('alias-display-val');
+            if (aliasDisplay) aliasDisplay.textContent = state.hostAlias;
+          }
+        }
+
         // 1. Sincronizar RSVPs
         const rsvpsRes = await fetch(`${url}/rsvps.json`);
         if (rsvpsRes.ok) {
@@ -2711,6 +2747,26 @@
         saveState();
       } catch (e) {
         console.error("Error al sincronizar con la nube", e);
+      }
+    }
+
+    async function cloudSaveHostConfig() {
+      if (!state.firebaseUrl) return;
+      const url = state.firebaseUrl.trim().replace(/\/$/, "");
+      const configData = {
+        hostAlias: state.hostAlias,
+        hostWhatsapp: state.hostWhatsapp,
+        mapsUrl: state.mapsUrl,
+        playlistId: state.playlistId
+      };
+      try {
+        await fetch(`${url}/hostConfig.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(configData)
+        });
+      } catch (e) {
+        console.error("Error al guardar config del host en la nube", e);
       }
     }
 
