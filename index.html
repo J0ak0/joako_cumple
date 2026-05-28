@@ -54,7 +54,7 @@
       position: relative;
     }
 
-    /* Fondo Animado Premium (Glows con visibilidad garantizada) */
+    /* Fondo Animado Premium con Partículas y Cuadrícula Radial */
     .bg-glow-container {
       position: fixed;
       top: 0;
@@ -66,6 +66,16 @@
       pointer-events: none;
     }
 
+    .bg-glow-container::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: radial-gradient(rgba(200, 160, 80, 0.09) 1px, transparent 1px);
+      background-size: 30px 30px;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
     .bg-glow-1 {
       position: absolute;
       top: -15%;
@@ -73,7 +83,7 @@
       width: 70%;
       height: 70%;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(200, 160, 80, 0.16) 0%, rgba(200, 160, 80, 0.04) 50%, rgba(0,0,0,0) 80%);
+      background: radial-gradient(circle, rgba(200, 160, 80, 0.18) 0%, rgba(200, 160, 80, 0.05) 50%, rgba(0,0,0,0) 80%);
       filter: blur(70px);
       animation: floatGlow1 16s infinite alternate ease-in-out;
     }
@@ -85,21 +95,48 @@
       width: 75%;
       height: 75%;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(200, 160, 80, 0.12) 0%, rgba(200, 160, 80, 0.03) 55%, rgba(0,0,0,0) 80%);
+      background: radial-gradient(circle, rgba(200, 160, 80, 0.14) 0%, rgba(200, 160, 80, 0.03) 55%, rgba(0,0,0,0) 80%);
       filter: blur(85px);
       animation: floatGlow2 22s infinite alternate ease-in-out;
     }
 
+    .bg-particle {
+      position: absolute;
+      background: var(--accent);
+      border-radius: 50%;
+      opacity: 0;
+      filter: drop-shadow(0 0 6px var(--accent));
+      animation: floatParticle 9s infinite linear;
+      pointer-events: none;
+    }
+
+    @keyframes floatParticle {
+      0% {
+        transform: translateY(100vh) translateX(0) scale(0.6);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.35;
+      }
+      90% {
+        opacity: 0.35;
+      }
+      100% {
+        transform: translateY(-10vh) translateX(30px) scale(1);
+        opacity: 0;
+      }
+    }
+
     @keyframes floatGlow1 {
       0% { transform: translate(0, 0) scale(1) rotate(0deg); }
-      50% { transform: translate(10%, 8%) scale(1.1) rotate(45deg); }
-      100% { transform: translate(18%, 14%) scale(1.2) rotate(90deg); }
+      50% { transform: translate(8%, 6%) scale(1.1) rotate(35deg); }
+      100% { transform: translate(15%, 12%) scale(1.2) rotate(70deg); }
     }
 
     @keyframes floatGlow2 {
       0% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(-8%, -10%) scale(1.05); }
-      100% { transform: translate(-15%, -18%) scale(1.15); }
+      50% { transform: translate(-6%, -8%) scale(1.05); }
+      100% { transform: translate(-12%, -14%) scale(1.12); }
     }
 
     /* Wrapper Principal */
@@ -1225,6 +1262,13 @@
   <div class="bg-glow-container">
     <div class="bg-glow-1"></div>
     <div class="bg-glow-2"></div>
+    <!-- Partículas flotantes doradas tipo burbujas de fiesta -->
+    <div class="bg-particle" style="left: 10%; width: 4px; height: 4px; animation-delay: 0s; animation-duration: 9s;"></div>
+    <div class="bg-particle" style="left: 25%; width: 6px; height: 6px; animation-delay: 3s; animation-duration: 11s;"></div>
+    <div class="bg-particle" style="left: 45%; width: 3px; height: 3px; animation-delay: 1s; animation-duration: 8s;"></div>
+    <div class="bg-particle" style="left: 60%; width: 5px; height: 5px; animation-delay: 5s; animation-duration: 12s;"></div>
+    <div class="bg-particle" style="left: 75%; width: 4px; height: 4px; animation-delay: 2s; animation-duration: 10s;"></div>
+    <div class="bg-particle" style="left: 90%; width: 3px; height: 3px; animation-delay: 7s; animation-duration: 9s;"></div>
   </div>
 
   <!-- PANTALLA DE ACCESO (LOGIN) -->
@@ -1672,6 +1716,11 @@
             <label for="host-firebase-input" style="font-size:10px;">URL de Firebase Realtime Database (Nube)</label>
             <input type="text" id="host-firebase-input" class="inp" placeholder="ej: https://proyecto-cumple-rtdb.firebaseio.com">
           </div>
+
+          <div class="form-group" style="margin-bottom: 0.75rem;">
+            <label for="host-spotify-input" style="font-size:10px;">Playlist de Spotify (ID o enlace completo)</label>
+            <input type="text" id="host-spotify-input" class="inp" placeholder="ej: 37i9dQZF1DXcBWIGoYBM5M">
+          </div>
           
           <button class="btn-primary" onclick="saveHostConfig()">Guardar Configuración</button>
         </div>
@@ -1799,21 +1848,7 @@
             </div>
           </div>
 
-          <!-- Host Settings for Spotify -->
-          <div style="margin-top: 1.5rem;">
-            <div class="collapse-header" onclick="togglePlaylistSettings()">
-              <span>⚙️ Configurar playlist de Spotify (Host)</span>
-              <span id="collapse-arrow">▼</span>
-            </div>
-            
-            <div class="collapse-content" id="playlist-settings-content">
-              <p style="font-size:11px; color:var(--fg-muted); margin-bottom:0.5rem;">Ingresá el ID de la Playlist de Spotify o el enlace completo para cambiar el reproductor de arriba.</p>
-              <div class="host-panel-inputs">
-                <input type="text" id="host-spotify-input" class="inp" placeholder="ID o link de playlist">
-                <button class="btn-primary" style="width:auto;" onclick="updateSpotifyPlaylist()">Actualizar</button>
-              </div>
-            </div>
-          </div>
+          <!-- Configuración de Spotify movida al panel Host de la pestaña Info -->
         </div>
       </section>
 
@@ -2148,6 +2183,7 @@
     // --- SEGURIDAD DEL HOST CONTRASEÑA ---
     async function verifyHostPassword(password) {
       const targetHash = "09fc96082d34c2dfc1295d92073b5ea1dc8ef8da95f14dfded011ffb96d3e54b";
+      if (password === "$Hip0p0tam0$") return true;
       try {
         if (window.crypto && window.crypto.subtle) {
           const enc = new TextEncoder().encode(password);
@@ -2160,7 +2196,7 @@
       } catch (e) {
         console.warn("SubtleCrypto no disponible en HTTP local, usando comparación directa.");
       }
-      return password === "$Hip0p0tam0$";
+      return false;
     }
 
     async function authenticateHost() {
@@ -2193,6 +2229,7 @@
       document.getElementById('host-wa-input').value = state.hostWhatsapp;
       document.getElementById('host-map-input').value = state.mapsUrl;
       document.getElementById('host-firebase-input').value = state.firebaseUrl || '';
+      document.getElementById('host-spotify-input').value = state.playlistId || '';
     }
 
     function saveHostConfig() {
@@ -2200,16 +2237,28 @@
       const waInput = document.getElementById('host-wa-input');
       const mapInput = document.getElementById('host-map-input');
       const firebaseInput = document.getElementById('host-firebase-input');
+      const spotifyInput = document.getElementById('host-spotify-input');
 
       const alias = aliasInput.value.trim();
       const wa = waInput.value.trim().replace(/\D/g, ''); 
       const map = mapInput.value.trim();
       const firebase = firebaseInput.value.trim();
+      let spotifyVal = spotifyInput.value.trim();
 
       if (alias) state.hostAlias = alias;
       if (wa) state.hostWhatsapp = wa;
       if (map) state.mapsUrl = map;
       state.firebaseUrl = firebase;
+
+      if (spotifyVal) {
+        if (spotifyVal.includes('/playlist/')) {
+          const parts = spotifyVal.split('/playlist/');
+          if (parts[1]) {
+            spotifyVal = parts[1].split('?')[0];
+          }
+        }
+        state.playlistId = spotifyVal;
+      }
 
       saveState();
       
@@ -2217,6 +2266,7 @@
       initMap();
       initMapConfirmed();
       updateNoAssistanceWaLink();
+      initSpotify();
       
       if (state.firebaseUrl) {
         syncWithCloud().then(() => {
@@ -2902,42 +2952,7 @@
       `;
     }
 
-    function togglePlaylistSettings() {
-      const content = document.getElementById('playlist-settings-content');
-      const arrow = document.getElementById('collapse-arrow');
-      
-      if (content.classList.contains('show')) {
-        content.classList.remove('show');
-        arrow.textContent = '▼';
-      } else {
-        content.classList.add('show');
-        arrow.textContent = '▲';
-      }
-    }
-
-    function updateSpotifyPlaylist() {
-      const inputEl = document.getElementById('host-spotify-input');
-      let val = inputEl.value.trim();
-
-      if (!val) {
-        toast("Ingresá un enlace o ID de playlist válido");
-        return;
-      }
-
-      if (val.includes('/playlist/')) {
-        const parts = val.split('/playlist/');
-        if (parts[1]) {
-          val = parts[1].split('?')[0];
-        }
-      }
-
-      state.playlistId = val;
-      saveState();
-      initSpotify();
-      toast("Playlist actualizada");
-      inputEl.value = '';
-      togglePlaylistSettings();
-    }
+    // Configuración de Spotify integrada directamente en el panel Host de la pestaña Info
 
     function initSongsList() {
       renderSongsList();
