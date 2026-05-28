@@ -1,0 +1,3401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Deshabilitar caché del navegador para evitar que los invitados vean datos desactualizados -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>¡Cumple de Joako! · Invitación Interactiva</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --fg: #f0ede8;
+      --fg-muted: rgba(240,237,232,0.45);
+      --fg-dim: rgba(240,237,232,0.25);
+      --accent: #c8a050;
+      --accent-dim: rgba(200,160,80,0.12);
+      --accent-border: rgba(200,160,80,0.3);
+      --border: rgba(255,255,255,0.08);
+      --border-hover: rgba(255,255,255,0.2);
+      --surface: rgba(255,255,255,0.04);
+      --surface-hover: rgba(255,255,255,0.07);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 18px;
+      --green: #6dba7f;
+      --yellow: #e0a848;
+      --red: #d06060;
+      --spotify: #1DB954;
+    }
+
+    /* Reset y Estilos Globales */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--fg);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      padding-bottom: 4rem;
+      position: relative;
+    }
+
+    /* Fondo Animado Premium (Glows con visibilidad garantizada) */
+    .bg-glow-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .bg-glow-1 {
+      position: absolute;
+      top: -15%;
+      left: -10%;
+      width: 70%;
+      height: 70%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200, 160, 80, 0.16) 0%, rgba(200, 160, 80, 0.04) 50%, rgba(0,0,0,0) 80%);
+      filter: blur(70px);
+      animation: floatGlow1 16s infinite alternate ease-in-out;
+    }
+
+    .bg-glow-2 {
+      position: absolute;
+      bottom: -15%;
+      right: -10%;
+      width: 75%;
+      height: 75%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200, 160, 80, 0.12) 0%, rgba(200, 160, 80, 0.03) 55%, rgba(0,0,0,0) 80%);
+      filter: blur(85px);
+      animation: floatGlow2 22s infinite alternate ease-in-out;
+    }
+
+    @keyframes floatGlow1 {
+      0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+      50% { transform: translate(10%, 8%) scale(1.1) rotate(45deg); }
+      100% { transform: translate(18%, 14%) scale(1.2) rotate(90deg); }
+    }
+
+    @keyframes floatGlow2 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-8%, -10%) scale(1.05); }
+      100% { transform: translate(-15%, -18%) scale(1.15); }
+    }
+
+    /* Wrapper Principal */
+    .wrapper {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    /* Animaciones */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* PANTALLA DE LOGIN (ACCESO) */
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .login-card {
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid var(--accent-border);
+      border-radius: var(--radius-xl);
+      padding: 2.75rem 2rem;
+      width: 100%;
+      max-width: 450px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .login-card h2 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 2.6rem;
+      line-height: 1.1;
+      margin-bottom: 0.85rem;
+      letter-spacing: -0.01em;
+    }
+
+    .login-card h2 span {
+      color: var(--accent);
+    }
+
+    .login-card p {
+      font-size: 1.05rem;
+      color: var(--fg-muted);
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    /* APP PRINCIPAL (OCULTA POR DEFECTO) */
+    .app-screen {
+      display: none;
+    }
+
+    /* Hero Section (No pegajoso, fluye natural para liberar espacio) */
+    .hero-container {
+      background: rgba(10, 10, 10, 0.4);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 0 1.5rem 0;
+    }
+
+    .hero {
+      animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+      text-align: center;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 14px;
+      border-radius: 100px;
+      border: 1px solid var(--accent-border);
+      background: var(--accent-dim);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.85rem;
+    }
+
+    .hero h1 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 2.6rem;
+      line-height: 1.1;
+      margin-bottom: 0.35rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 span {
+      color: var(--accent);
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--fg-muted);
+      margin-bottom: 0.85rem;
+    }
+
+    /* Countdown */
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.6rem;
+      max-width: 340px;
+      margin: 0 auto;
+    }
+
+    .countdown-box {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 6px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+
+    .countdown-box:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent-border);
+    }
+
+    .countdown-val {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--fg);
+      line-height: 1.1;
+    }
+
+    .countdown-label {
+      font-size: 11px;
+      color: var(--fg-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 2px;
+    }
+
+    /* Navegación por Tabs (Pegajosa en el top absoluto) */
+    .tabs-container {
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+      padding: 0.25rem 0;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 1.5rem;
+      overflow-x: auto;
+      scrollbar-width: none; /* Firefox */
+      padding: 0.5rem 0.25rem;
+      animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+    }
+
+    .tabs::-webkit-scrollbar {
+      display: none; /* Safari / Chrome */
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--fg-muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0.6rem 0.3rem 0.85rem 0.3rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      white-space: nowrap;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      flex-shrink: 0;
+    }
+
+    .tab-btn:hover {
+      color: var(--fg);
+    }
+
+    .tab-btn:active {
+      transform: scale(0.96);
+    }
+
+    .tab-btn.active {
+      border-bottom-color: var(--accent);
+      color: var(--fg);
+      text-shadow: 0 0 10px rgba(200, 160, 80, 0.3);
+    }
+
+    .tab-btn svg {
+      width: 17px;
+      height: 17px;
+      fill: currentColor;
+    }
+
+    /* Paneles de Contenido con Animación Fluida de Desplazamiento */
+    @keyframes panelEnter {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+      animation: panelEnter 0.5s cubic-bezier(0.215, 0.61, 0.355, 1) both;
+    }
+
+    h2.panel-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.85rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      color: var(--fg);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    h2.panel-title span {
+      color: var(--accent);
+    }
+
+    /* Componentes Reutilizables (Elevación sutil y brilla al pasar cursor) */
+    .card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s, box-shadow 0.25s;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent-border);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--fg);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .inp {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      color: var(--fg);
+      outline: none;
+      transition: border-color 0.2s, background-color 0.2s;
+    }
+
+    .inp::placeholder {
+      color: var(--fg-dim);
+    }
+
+    .inp:focus {
+      border-color: var(--accent-border);
+      background: var(--surface-hover);
+    }
+
+    /* Botón Principal con Brillo Pulsante Soft */
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 0 0 rgba(200, 160, 80, 0.4); }
+      70% { box-shadow: 0 0 0 8px rgba(200, 160, 80, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(200, 160, 80, 0); }
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--accent-border);
+      background: var(--accent-dim);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--accent);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      animation: pulseGlow 3s infinite;
+    }
+
+    .btn-primary:hover {
+      background: rgba(200, 160, 80, 0.22);
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-outline {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      color: var(--fg-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--border-hover);
+      color: var(--fg);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .warning-box {
+      border: 1px solid rgba(224, 168, 72, 0.25);
+      background: rgba(224, 168, 72, 0.05);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--yellow);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .warning-box svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* GRID INFO CARDS (Panel 1) */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .info-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s;
+    }
+
+    .info-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent-border);
+    }
+
+    .info-card-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .info-card-label {
+      font-size: 12px;
+      color: var(--fg-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .info-card-val {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--fg);
+    }
+
+    /* RSVP Section */
+    .rsvp-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.6rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .rsvp-stat-box {
+      border-radius: var(--radius-md);
+      padding: 12px 8px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+
+    .rsvp-stat-box.going {
+      border-color: rgba(109, 186, 127, 0.2);
+      background: rgba(109, 186, 127, 0.05);
+      color: var(--green);
+    }
+
+    .rsvp-stat-box.maybe {
+      border-color: rgba(224, 168, 72, 0.2);
+      background: rgba(224, 168, 72, 0.05);
+      color: var(--yellow);
+    }
+
+    .rsvp-stat-box.no {
+      border-color: rgba(208, 96, 96, 0.2);
+      background: rgba(208, 96, 96, 0.05);
+      color: var(--red);
+    }
+
+    .rsvp-stat-num {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.75rem;
+    }
+
+    .rsvp-stat-lbl {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      opacity: 0.85;
+    }
+
+    .rsvp-actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.6rem;
+      margin-top: 0.75rem;
+    }
+
+    .btn-rsvp {
+      padding: 14px 10px;
+      font-size: 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--fg-muted);
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-rsvp:hover {
+      border-color: var(--border-hover);
+      color: var(--fg);
+      transform: translateY(-2px);
+    }
+
+    .btn-rsvp:active {
+      transform: translateY(0) scale(0.97);
+    }
+
+    .btn-rsvp.active-going {
+      background: rgba(109, 186, 127, 0.18);
+      border-color: var(--green);
+      color: var(--green);
+      box-shadow: 0 0 12px rgba(109, 186, 127, 0.15);
+    }
+
+    .btn-rsvp.active-maybe {
+      background: rgba(224, 168, 72, 0.18);
+      border-color: var(--yellow);
+      color: var(--yellow);
+      box-shadow: 0 0 12px rgba(224, 168, 72, 0.15);
+    }
+
+    .btn-rsvp.active-no {
+      background: rgba(208, 96, 96, 0.18);
+      border-color: var(--red);
+      color: var(--red);
+      box-shadow: 0 0 12px rgba(208, 96, 96, 0.15);
+    }
+
+    .rsvp-list {
+      margin-top: 1.5rem;
+      max-height: 200px;
+      overflow-y: auto;
+      padding-right: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .rsvp-list::-webkit-scrollbar {
+      width: 4px;
+    }
+    .rsvp-list::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+
+    .rsvp-list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+    }
+
+    .rsvp-name {
+      font-weight: 600;
+      color: var(--fg);
+    }
+
+    .rsvp-badge {
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-weight: 700;
+    }
+
+    .rsvp-badge.going {
+      background: rgba(109, 186, 127, 0.15);
+      color: var(--green);
+    }
+    .rsvp-badge.maybe {
+      background: rgba(224, 168, 72, 0.15);
+      color: var(--yellow);
+    }
+    .rsvp-badge.no {
+      background: rgba(208, 96, 96, 0.15);
+      color: var(--red);
+    }
+
+    /* Panel 2 — Cómo Llegar */
+    .map-frame {
+      width: 100%;
+      height: 260px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      margin-bottom: 1rem;
+      background: #111;
+    }
+
+    .host-settings-btn {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 0.5rem;
+    }
+
+    .host-panel {
+      border: 1px dashed var(--accent-border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      background: rgba(200, 160, 80, 0.02);
+    }
+
+    .host-panel-header {
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* Panel 3 — Menú */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    @media (min-width: 480px) {
+      .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .menu-section {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      transition: transform 0.2s;
+    }
+
+    .menu-section:hover {
+      transform: translateY(-1px);
+      border-color: var(--accent-border);
+    }
+
+    .menu-section-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--accent);
+      margin-bottom: 0.95rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .menu-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .menu-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .menu-item-head {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--fg);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .menu-item-note {
+      font-size: 13px;
+      color: var(--fg-muted);
+      padding-left: 1.6rem;
+      line-height: 1.4;
+    }
+
+    .menu-footer {
+      text-align: center;
+      font-size: 14px;
+      color: var(--fg-muted);
+      margin-top: 2rem;
+      font-style: italic;
+      border-top: 1px dashed var(--border);
+      padding-top: 1.25rem;
+      line-height: 1.5;
+    }
+
+    /* Panel 4 — Música */
+    .spotify-iframe-container {
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      margin-bottom: 1.25rem;
+      background: #121212;
+      border: 1px solid var(--border);
+    }
+
+    .spotify-iframe-container iframe {
+      display: block;
+    }
+
+    .music-suggestions {
+      margin-top: 1rem;
+    }
+
+    .songs-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.75rem;
+      max-height: 150px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .song-chip {
+      background: rgba(29, 185, 84, 0.08);
+      border: 1px solid rgba(29, 185, 84, 0.3);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 12px;
+      color: #1DB954;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 500;
+    }
+
+    .song-chip svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    .song-empty {
+      font-size: 13px;
+      color: var(--fg-dim);
+      font-style: italic;
+      padding: 0.5rem 0;
+    }
+
+    .collapse-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      padding: 0.5rem 0;
+      color: var(--fg-dim);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+      transition: color 0.15s;
+    }
+
+    .collapse-header:hover {
+      color: var(--fg-muted);
+    }
+
+    .collapse-content {
+      display: none;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px dashed var(--border);
+    }
+
+    .collapse-content.show {
+      display: block;
+    }
+
+    /* Panel 5 — Fotos */
+    .upload-zone {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.01);
+      transition: all 0.2s;
+      margin-bottom: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .upload-zone:hover, .upload-zone.dragover {
+      border-color: var(--accent);
+      background: rgba(200, 160, 80, 0.02);
+    }
+
+    .upload-zone svg {
+      width: 32px;
+      height: 32px;
+      fill: var(--fg-muted);
+      transition: fill 0.2s;
+    }
+
+    .upload-zone:hover svg {
+      fill: var(--accent);
+    }
+
+    .upload-zone p {
+      font-size: 13px;
+      color: var(--fg-muted);
+    }
+
+    .upload-zone span {
+      font-size: 11px;
+      color: var(--fg-dim);
+    }
+
+    .photos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .photo-card {
+      aspect-ratio: 1;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #111;
+      position: relative;
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .photo-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .photo-empty {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      color: var(--fg-dim);
+      font-size: 13px;
+      font-style: italic;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      margin-bottom: 1.25rem;
+    }
+
+    .photos-note {
+      font-size: 12px;
+      color: var(--fg-muted);
+      text-align: center;
+      line-height: 1.4;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* Panel 6 — Movilidad */
+    .rides-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .ride-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: opacity 0.25s ease;
+    }
+
+    .ride-card.full {
+      opacity: 0.65;
+    }
+
+    .ride-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-border);
+      color: var(--accent);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      text-transform: uppercase;
+    }
+
+    .ride-info {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .ride-head {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .ride-driver {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--fg);
+    }
+
+    .ride-badge {
+      font-size: 10px;
+      padding: 1px 8px;
+      border-radius: 100px;
+      font-weight: 600;
+    }
+
+    .ride-badge.available {
+      background: rgba(109, 186, 127, 0.15);
+      color: var(--green);
+    }
+
+    .ride-badge.full {
+      background: rgba(208, 96, 96, 0.15);
+      color: var(--red);
+    }
+
+    .ride-route {
+      font-size: 12px;
+      color: var(--fg-muted);
+    }
+
+    .ride-contact {
+      font-size: 12px;
+      color: var(--accent);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      width: fit-content;
+      margin-top: 2px;
+    }
+
+    .ride-contact:hover {
+      text-decoration: underline;
+    }
+
+    .ride-contact svg {
+      width: 12px;
+      height: 12px;
+      fill: currentColor;
+    }
+
+    .ride-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      flex-shrink: 0;
+    }
+
+    .ride-actions button {
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .rides-empty {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--fg-dim);
+      font-size: 13px;
+      font-style: italic;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      margin-bottom: 1.5rem;
+    }
+
+    /* Formulario Rides */
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    @media (min-width: 480px) {
+      .form-row-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .form-group label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--fg-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    select.inp {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f0ede8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+      padding-right: 36px;
+    }
+
+    select.inp option {
+      background: #141414;
+      color: var(--fg);
+    }
+
+    /* Estilos para el pizarrón de firmas */
+    .signature-bubble {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      animation: fadeUp 0.3s ease;
+    }
+
+    .signature-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .signature-author {
+      font-weight: 700;
+      color: var(--fg);
+    }
+
+    .signature-date {
+      color: var(--fg-dim);
+      font-size: 10px;
+    }
+
+    .signature-text {
+      font-size: 13px;
+      color: var(--fg-muted);
+      line-height: 1.4;
+      white-space: pre-wrap;
+      font-style: italic;
+    }
+
+    /* Toast System */
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #1a1a1a;
+      border: 1px solid rgba(200, 160, 80, 0.35);
+      color: #f0ede8;
+      font-size: 13px;
+      padding: 10px 22px;
+      border-radius: 100px;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 9999;
+      white-space: nowrap;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Mobile Adaptations */
+    @media (max-width: 480px) {
+      .hero-container {
+        padding: 1.25rem 0 1rem 0;
+      }
+      .hero h1 {
+        font-size: 1.75rem;
+      }
+      .hero p {
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
+      }
+      .countdown-val {
+        font-size: 1.1rem;
+      }
+      .countdown-label {
+        font-size: 8px;
+      }
+      .tabs-container {
+        top: 0;
+      }
+      .tab-btn {
+        font-size: 0.8rem;
+        padding-bottom: 0.5rem;
+      }
+      body {
+        padding-bottom: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Fondo Animado Premium -->
+  <div class="bg-glow-container">
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+  </div>
+
+  <!-- PANTALLA DE ACCESO (LOGIN) -->
+  <div class="login-screen" id="login-screen">
+    <div class="login-card">
+      <div class="badge-pill">Edición Pre 40</div>
+      <h2>Cumple de <span>Joako</span></h2>
+      <p>Ingresá tu correo para que el software registre que todavía tenés pulso. ¡Festejar los 39 en modo Pre 40 requiere logística de primer nivel!</p>
+      
+      <form onsubmit="handleLogin(event)">
+        <div style="display:flex; flex-direction:column; gap:0.75rem;">
+          <input type="email" id="login-email-input" class="inp" placeholder="tu@email.com" required style="text-align:center;">
+          <button type="submit" class="btn-primary" style="margin-top:0.25rem;">Ingresar a la Invitación</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- APLICACIÓN PRINCIPAL (OCULTA HASTA EL LOGIN) -->
+  <div class="app-screen" id="app-screen">
+    
+    <!-- HERO SECTION -->
+    <div class="hero-container">
+      <div class="wrapper">
+        <header class="hero">
+          <div class="badge-pill">Pre 40 de Joako</div>
+          <h1><span>Joako</span> cumple 39</h1>
+          <p style="font-size: 0.85rem; color: var(--accent); margin-top: -0.25rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Festejando los 39 con alma de 40 (Edición Especial 2026)</p>
+          <p id="hero-subtitle">Domingo 1 de junio de 2026 · 11:30 hs · Cruz del Eje, Córdoba</p>
+          
+          <!-- Countdown -->
+          <div class="countdown" id="countdown">
+            <div class="countdown-box">
+              <div class="countdown-val" id="cd-days">00</div>
+              <div class="countdown-label">Días</div>
+            </div>
+            <div class="countdown-box">
+              <div class="countdown-val" id="cd-hours">00</div>
+              <div class="countdown-label">Horas</div>
+            </div>
+            <div class="countdown-box">
+              <div class="countdown-val" id="cd-mins">00</div>
+              <div class="countdown-label">Min</div>
+            </div>
+            <div class="countdown-box">
+              <div class="countdown-val" id="cd-secs">00</div>
+              <div class="countdown-label">Seg</div>
+            </div>
+          </div>
+        </header>
+      </div>
+    </div>
+
+    <!-- NAVIGATION TABS -->
+    <div class="tabs-container" id="tabs-navigation-container" style="display: none;">
+      <div class="wrapper">
+        <nav class="tabs" id="tab-nav">
+          <button class="tab-btn active" data-tab="info">
+            <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
+            Info
+          </button>
+          <button class="tab-btn" data-tab="llegar">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Cómo llegar
+          </button>
+          <button class="tab-btn" data-tab="menu">
+            <svg viewBox="0 0 24 24"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></svg>
+            Menú
+          </button>
+          <button class="tab-btn" data-tab="musica">
+            <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+            Música
+          </button>
+          <button class="tab-btn" data-tab="fotos">
+            <svg viewBox="0 0 24 24"><path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
+            Fotos
+          </button>
+          <button class="tab-btn" data-tab="movilidad">
+            <svg viewBox="0 0 24 24"><path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/></svg>
+            Movilidad
+          </button>
+          <button class="tab-btn" data-tab="regalos">
+            <svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35-.54-.81-1.45-1.35-2.5-1.35-1.66 0-3 1.34-3 3 0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-6 1c0-.55.45-1 1-1s1 .45 1 1-.45 1-1 1-1-.45-1-1zm11 14H4V8h16v10z"/></svg>
+            Regalos
+          </button>
+          <button class="tab-btn" data-tab="firmas">
+            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+            Firmas
+          </button>
+        </nav>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT PANELS -->
+    <main class="wrapper">
+
+      <!-- PANEL 1 — INFO -->
+      <section class="panel active" id="panel-info">
+        
+        <!-- SUB-PANEL 0: PREGUNTA INICIAL / DECIDIR (WIZARD START) -->
+        <div id="info-sub-start" style="display: block;">
+          <h2 class="panel-title">Festejo de <span>Joako</span></h2>
+          
+          <!-- Info Cards -->
+          <div class="info-grid">
+            <div class="info-card">
+              <div class="info-card-icon">📅</div>
+              <div class="info-card-label">Fecha</div>
+              <div class="info-card-val">Dom 1 de Junio</div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-icon">⏰</div>
+              <div class="info-card-label">Hora</div>
+              <div class="info-card-val">11:30 hs (Almuerzo ~14:00)</div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-icon">📍</div>
+              <div class="info-card-label">Lugar</div>
+              <div class="info-card-val" style="font-size:0.8rem;">Cruz del Eje, Cba</div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-icon">🍗</div>
+              <div class="info-card-label">Formato</div>
+              <div class="info-card-val">Pollo al disco + Parrilla</div>
+            </div>
+          </div>
+
+          <!-- RSVP Decider Box -->
+          <div class="card" style="border: 1px solid var(--accent-border); box-shadow: 0 4px 20px rgba(200, 160, 80, 0.05);">
+            <div class="card-title" style="color: var(--accent); margin-bottom: 1rem;">
+              <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
+              ¿Venís al festejo de los 39 años? (Pre 40)
+            </div>
+            <p style="font-size: 14px; color: var(--fg-muted); margin-bottom: 1.5rem; line-height: 1.5;">
+              Confirmá tu asistencia al cumpleaños de Joako. Es una prueba piloto para organizarnos para el año que viene.
+            </p>
+            <div class="rsvp-actions" style="margin-top:0; grid-template-columns: 1fr; gap: 0.85rem;">
+              <button type="button" class="btn-rsvp active-going" style="font-size:1.15rem; padding: 16px; border-width: 2px;" onclick="goToWizardStep('form')">✅ Sí, voy</button>
+              <button type="button" class="btn-rsvp active-maybe" style="font-size:1.15rem; padding: 16px; border-width: 2px;" onclick="goToWizardStep('maybe')">🤔 Quizás...</button>
+              <button type="button" class="btn-rsvp active-no" style="font-size:1.15rem; padding: 16px; border-width: 2px;" onclick="goToWizardStep('no')">❌ No puedo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUB-PANEL 1: FORMULARIO INICIAL / DATOS BÁSICOS -->
+        <div id="info-sub-form" style="display: none;">
+          <h2 class="panel-title">Confirmá tus <span>datos</span></h2>
+          
+          <!-- RSVP Wizard Box -->
+          <div class="card" style="border: 1px solid var(--accent-border); box-shadow: 0 4px 20px rgba(200, 160, 80, 0.05);">
+            <div class="card-title" style="color: var(--accent); margin-bottom: 1rem;">
+              <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+              ¿Quién nos acompaña?
+            </div>
+            
+            <form id="rsvp-wizard-form" onsubmit="handleWizardSubmit(event)">
+              <div style="display:flex; flex-direction:column; gap:0.85rem;">
+                <div class="form-group">
+                  <label for="rsvp-wizard-name" style="font-size: 11px; color: var(--fg-muted);">Tu Nombre y Apellido</label>
+                  <input type="text" id="rsvp-wizard-name" class="inp" placeholder="Ingresá tu nombre y apellido" required maxlength="40">
+                </div>
+                
+                <div class="form-group" id="wiz-guests-group" style="margin-top:0.25rem;">
+                  <label for="rsvp-wizard-guests-count" style="font-size: 11px; color: var(--fg-muted); margin-bottom: 2px;">¿Cuántos son en total? (VOS + acompañantes)</label>
+                  <select id="rsvp-wizard-guests-count" class="inp">
+                    <option value="1" selected>Solo yo (1 persona)</option>
+                    <option value="2">2 personas</option>
+                    <option value="3">3 personas</option>
+                    <option value="4">4 personas</option>
+                    <option value="5">5 personas</option>
+                    <option value="6">6 personas o más</option>
+                  </select>
+                </div>
+
+                <div class="form-group" style="margin-top:0.25rem;">
+                  <label for="rsvp-wizard-origin" style="font-size: 11px; color: var(--fg-muted); margin-bottom: 2px;">¿Desde dónde venís?</label>
+                  <select id="rsvp-wizard-origin" class="inp" onchange="toggleOriginDetail()">
+                    <option value="cordoba" selected>Córdoba Capital / Gran Córdoba</option>
+                    <option value="cruzdeleje">Cruz del Eje</option>
+                    <option value="otro">Otro lugar (especificar)</option>
+                  </select>
+                </div>
+                
+                <div class="form-group" id="rsvp-origin-detail-group" style="display: none; margin-top: 0.25rem;">
+                  <label for="rsvp-wizard-origin-detail" style="font-size: 11px; color: var(--fg-muted);">¿De qué ciudad/lugar venís?</label>
+                  <input type="text" id="rsvp-wizard-origin-detail" class="inp" placeholder="Ej: Villa Carlos Paz" maxlength="40">
+                </div>
+
+                <button type="submit" class="btn-primary" style="margin-top:0.5rem;" id="btn-submit-wizard">
+                  Confirmar y ver detalles 🎉
+                </button>
+                
+                <button type="button" class="btn-outline" style="margin-top:0.25rem;" onclick="goToWizardStep('start')">
+                  ⬅️ Volver a opciones
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- SUB-PANEL 2: ESTADO QUIZÁS (MOTIVOS GRACIOSOS) -->
+        <div id="info-sub-maybe" style="display: none;">
+          <h2 class="panel-title">Estado: <span>En duda 🤔</span></h2>
+          
+          <div class="card" style="border: 1px solid var(--yellow); background: rgba(224, 168, 72, 0.03); animation: fadeUp 0.5s ease;">
+            <div class="card-title" style="color: var(--yellow);">⚠️ ¡No te podés perder esto, che!</div>
+            <p style="font-size: 14px; color: var(--fg-muted); margin-bottom: 1.25rem; line-height: 1.5;">
+              Sabemos que tenés dudas, pero te dejamos estos motivos de fuerza mayor para que dejes de dar vueltas y confirmes:
+            </p>
+            <ul style="list-style: none; font-size: 13px; color: var(--fg-muted); display: flex; flex-direction: column; gap: 1rem; line-height: 1.45;">
+              <li style="display: flex; gap: 0.5rem; align-items: flex-start;">
+                <span style="font-size: 1.2rem;">🥘</span>
+                <span><strong>El Pollo al Disco es sagrado:</strong> Declarado patrimonio de la humanidad (por la ONU y las rodillas del cumpleañero). Comerlo es ley.</span>
+              </li>
+              <li style="display: flex; gap: 0.5rem; align-items: flex-start;">
+                <span style="font-size: 1.2rem;">📝</span>
+                <span><strong>Ensayo para los 40:</strong> Este cumpleaños de 409 es el piloto oficial. Si no venís hoy, el año que viene en los 40 reales no vas a entender el chiste.</span>
+              </li>
+              <li style="display: flex; gap: 0.5rem; align-items: flex-start;">
+                <span style="font-size: 1.2rem;">🏊</span>
+                <span><strong>Pileta e Hipotermia:</strong> La pileta para valientes es una forma excelente de reconectarte con tu niño interior (y reactivar tu circulación).</span>
+              </li>
+              <li style="display: flex; gap: 0.5rem; align-items: flex-start;">
+                <span style="font-size: 1.2rem;">🤐</span>
+                <span><strong>Matusalén chismoso:</strong> Si no venís, Joako va a hablar mal de vos en el pizarrón de firmas (y tiene 409 años de chismes acumulados).</span>
+              </li>
+            </ul>
+
+            <div style="display:flex; flex-direction:column; gap:0.5rem; margin-top: 2rem;">
+              <button class="btn-primary" onclick="goToWizardStep('form')">
+                🎉 ¡Al final voy! Confirmar asistencia
+              </button>
+              <button class="btn-outline" onclick="goToWizardStep('start')">
+                ⬅️ Cambiar mi respuesta / Volver
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUB-PANEL 3: ESTADO NO VOY (KARMA & ALIAS GRACIOSO) -->
+        <div id="info-sub-no" style="display: none;">
+          <h2 class="panel-title">Estado: <span>No asiste ❌</span></h2>
+          
+          <div class="card" style="border: 1px solid var(--red); background: rgba(208, 96, 96, 0.03); animation: fadeUp 0.5s ease;">
+            <div class="card-title" style="color: var(--red);">😢 ¡Te vamos a extrañar mucho!</div>
+            <p style="font-size: 14px; color: var(--fg-muted); margin-bottom: 1.25rem; line-height: 1.5;">
+              Qué lástima que no puedas estar en los 39 años (Pre 40) de Joako. Pero ponete las pilas y **agendá desde ya para el año que viene**, que tiro la casa por la ventana para festejar mis **40 años reales** de verdad. ¡Ahí no podés faltar!
+            </p>
+            <p style="font-size: 13px; color: var(--fg-muted); margin-bottom: 1.5rem; line-height: 1.5; font-style: italic;">
+              De todas formas, si te sentís mal por clavarme y no venir a comer pollo al disco... podés colaborar con el fondo del festejo transfiriéndome lo que quieras a mi Alias. No es obligatorio, ¡pero limpia el karma al 100%! 😉
+            </p>
+
+            <div style="display: flex; gap: 0.5rem; align-items: center; background: rgba(255,255,255,0.02); padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--border); margin-bottom: 1rem;">
+              <div style="flex-grow: 1;">
+                <div style="font-size: 9px; color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.05em;">Alias para limpiar la culpa</div>
+                <div id="alias-clean-karma" style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.15rem; color: var(--fg); letter-spacing: -0.01em;">joako.cumple.mp</div>
+              </div>
+              <button class="btn-primary" style="width: auto; padding: 10px 18px; font-size: 12px;" onclick="copyAliasKarma()">Copiar</button>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:0.5rem;">
+              <a id="no-wa-link" href="#" target="_blank" class="btn-outline" style="text-decoration: none; border-color: rgba(255,255,255,0.1); color: var(--fg); background: rgba(255, 255, 255, 0.02); display: flex; justify-content: center; align-items: center;">
+                💬 Mandarle un WhatsApp a Joako
+              </a>
+              <button class="btn-primary" style="background: rgba(109, 186, 127, 0.1); border-color: rgba(109, 186, 127, 0.3); color: var(--green); animation: none;" onclick="goToWizardStep('form')">
+                🎉 ¡Cambié de opinión! Al final voy
+              </button>
+              <button class="btn-outline" onclick="goToWizardStep('start')">
+                ⬅️ Cambiar mi respuesta / Volver
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUB-PANEL 4: ESTADO CONFIRMADO (VOY) - APP DESBLOQUEADA -->
+        <div id="info-sub-confirmed" style="display: none;">
+          <h2 class="panel-title">Asistencia <span>confirmada 🎉</span></h2>
+          
+          <div class="card" style="border: 1px solid var(--green); background: rgba(109, 186, 127, 0.02); animation: fadeUp 0.5s ease;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <div class="card-title" style="color: var(--green); margin-bottom:0.4rem; font-size:1.15rem;">¡Listo, ya estás registrado!</div>
+                <p id="confirmed-status-text" style="font-size: 14px; color: var(--fg-muted);">Confirmaste que vas con 1 persona.</p>
+              </div>
+              <button class="btn-outline" style="padding: 6px 12px; font-size: 11px; flex-shrink:0;" onclick="goToWizardStep('form')">✏️ Modificar</button>
+            </div>
+          </div>
+
+          <!-- CONSEJOS DE VIAJE SEGÚN ORIGEN -->
+          <div class="card" id="confirmed-travel-advice-card" style="border: 1px solid rgba(200, 160, 80, 0.3); background: rgba(200, 160, 80, 0.02); animation: fadeUp 0.5s ease;">
+            <div class="card-title" style="color: var(--accent); margin-bottom: 0.75rem;">
+              🚗 Tu Ruta y Consejos de Viaje
+            </div>
+            <div id="travel-advice-content" style="font-size: 13px; color: var(--fg-muted); line-height: 1.5;">
+              <!-- Dinámico -->
+            </div>
+          </div>
+
+          <!-- DETALLE DEL LUGAR (MAPA) -->
+          <div class="card" style="border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);">
+            <div class="card-title" style="color: var(--accent); margin-bottom: 0.75rem;">
+              📍 Ubicación del Evento
+            </div>
+            <iframe id="map-iframe-confirmed" class="map-frame" src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d955.5337447438586!2d-64.83752942315978!3d-30.69930238894274!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzDCsDQxJzU1LjYiUyA2NMKwNTAnMTMuMSJX!5e1!3m2!1ses!2sar!4v1780007607902!5m2!1ses!2sar" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="height: 200px;"></iframe>
+            
+            <div class="warning-box" style="margin-top: 0.75rem; margin-bottom: 0.75rem;">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+              <span>Lugar alejado: descargá Google Maps offline de la zona antes de salir.</span>
+            </div>
+            
+            <a href="https://maps.google.com" target="_blank" id="open-maps-btn-confirmed" class="btn-primary" style="text-decoration:none;">
+              <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/></svg>
+              Abrir en Google Maps
+            </a>
+          </div>
+
+          <!-- QUÉ VAMOS A HACER (MENÚ Y DETALLES) -->
+          <div class="card" style="border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);">
+            <div class="card-title" style="color: var(--accent); margin-bottom: 1rem;">
+              🥘 Qué vamos a hacer (Menú & Plan)
+            </div>
+            
+            <div class="menu-grid" style="grid-template-columns: 1fr; gap: 0.85rem;">
+              <div class="menu-section" style="padding: 1rem;">
+                <div class="menu-section-title" style="font-size:1.1rem; margin-bottom:0.5rem; padding-bottom:0.4rem;">🧀 Para picar</div>
+                <div class="menu-item">
+                  <div class="menu-item-head">🧀 Picada de fiambres</div>
+                  <div class="menu-item-note" style="padding-left: 0;">Quesos y embutidos para aceitar las mandíbulas y hablar de reuma.</div>
+                </div>
+              </div>
+
+              <div class="menu-section" style="padding: 1rem;">
+                <div class="menu-section-title" style="font-size:1.1rem; margin-bottom:0.5rem; padding-bottom:0.4rem;">🥘 Principal</div>
+                <div class="menu-list" style="gap: 0.5rem;">
+                  <div class="menu-item">
+                    <div class="menu-item-head">🥘 Pollo al disco</div>
+                    <div class="menu-item-note" style="padding-left: 0;">El plato estrella que el cumpleañero viene perfeccionando desde 1810.</div>
+                  </div>
+                  <div class="menu-item">
+                    <div class="menu-item-head">🥩 Algo a la parrilla</div>
+                    <div class="menu-item-note" style="padding-left: 0;">Para acompañar y verificar que los dientes todavía aguanten carne.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="menu-section" style="padding: 1rem;">
+                <div class="menu-section-title" style="font-size:1.1rem; margin-bottom:0.5rem; padding-bottom:0.4rem;">🍦 Postre & Bebida</div>
+                <div class="menu-list" style="gap: 0.5rem;">
+                  <div class="menu-item">
+                    <div class="menu-item-head">🎂 Torta & Mesa Dulce</div>
+                    <div class="menu-item-note" style="padding-left: 0;">Para soplar las 39 velitas y festejar el pre 40.</div>
+                  </div>
+                  <div class="menu-item">
+                    <div class="menu-item-head">🍺 Bebidas (¡EXCLUSIVO: TRAÉ LO TUYO!)</div>
+                    <div class="menu-item-note" style="padding-left: 0; color: var(--yellow); font-weight: bold;">Joako tiene agua y hielo, pero CADA UNO debe traer el alcohol que consumirá para no quedarnos cortos bajo ningún concepto.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Detalles Prácticos de Convivencia -->
+            <div style="margin-top: 1.5rem; border-top: 1px dashed var(--border); padding-top: 1rem;">
+              <div class="card-title" style="font-size:1rem; margin-bottom:0.5rem; color:var(--accent);">💡 Detalles a tener en cuenta</div>
+              <ul style="list-style: none; font-size: 13px; color: var(--fg-muted); display: flex; flex-direction: column; gap: 0.5rem; line-height: 1.4;">
+                <li style="display: flex; gap: 0.5rem; align-items: flex-start;">
+                  <span>🍃</span>
+                  <span><strong>Abrigo:</strong> El festejo es al aire libre. Traé abrigo porque al atardecer refresca.</span>
+                </li>
+                <li style="display: flex; gap: 0.5rem; align-items: flex-start;">
+                  <span>🏊</span>
+                  <span><strong>Pileta:</strong> Hay pileta libre... ¡pero solo para valientes!</span>
+                </li>
+                <li style="display: flex; gap: 0.5rem; align-items: flex-start;">
+                  <span>👕</span>
+                  <span><strong>Código de vestimenta:</strong> No hay, vení como más te guste y te sientas cómodo.</span>
+                </li>
+                <li style="display: flex; gap: 0.5rem; align-items: flex-start;">
+                  <span>🚬</span>
+                  <span><strong>Fumar:</strong> Permitido libremente al aire libre.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- RSVP Stats & List -->
+          <div class="card">
+            <div class="card-title">📊 Confirmados del Festejo</div>
+            
+            <div class="rsvp-stats" style="margin-bottom: 1.5rem;">
+              <div class="rsvp-stat-box going">
+                <div class="rsvp-stat-num" id="stat-going">0</div>
+                <div class="rsvp-stat-lbl">Van</div>
+              </div>
+              <div class="rsvp-stat-box maybe">
+                <div class="rsvp-stat-num" id="stat-maybe">0</div>
+                <div class="rsvp-stat-lbl">Quizás</div>
+              </div>
+              <div class="rsvp-stat-box no">
+                <div class="rsvp-stat-num" id="stat-no">0</div>
+                <div class="rsvp-stat-lbl">No van</div>
+              </div>
+            </div>
+
+            <div class="rsvp-list" id="rsvp-list">
+              <!-- Dinámico -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Host Settings Button -->
+        <div class="host-settings-btn" id="host-settings-btn-container" style="display:none;">
+          <button class="btn-outline" style="padding: 6px 12px; font-size:11px;" onclick="toggleHostPanel('info')">⚙️ Configuración de la invitación (Host)</button>
+        </div>
+
+        <!-- Panel de Autenticación del Host (Oculto por defecto) -->
+        <div class="host-panel" id="host-auth-panel" style="display:none; margin-top: 0.75rem;">
+          <div class="host-panel-header">🔐 Acceso Administrador (Joako)</div>
+          <p style="font-size:11px; color:var(--fg-muted); margin-bottom: 0.75rem;">Ingresá la contraseña para acceder a la configuración del cumple.</p>
+          <div style="display:flex; flex-direction:column; gap:0.5rem;">
+            <input type="password" id="host-password-input" class="inp" placeholder="Contraseña de administrador" style="text-align:center;">
+            <button type="button" class="btn-primary" onclick="authenticateHost()">Desbloquear Panel</button>
+          </div>
+        </div>
+
+        <!-- Panel de Configuración (Desbloqueado con password) -->
+        <div class="host-panel" id="host-info-panel" style="display:none; margin-top: 0.75rem;">
+          <div class="host-panel-header">⚙️ Panel de Configuración (Host)</div>
+          
+          <div class="form-group" style="margin-bottom: 0.75rem;">
+            <label for="host-alias-input" style="font-size:10px;">Alias de Transferencia (Regalos)</label>
+            <input type="text" id="host-alias-input" class="inp" placeholder="ej: joako.cumple.mp">
+          </div>
+          
+          <div class="form-group" style="margin-bottom: 0.75rem;">
+            <label for="host-wa-input" style="font-size:10px;">WhatsApp del Host (código país + número, ej: 5493515551234)</label>
+            <input type="text" id="host-wa-input" class="inp" placeholder="WhatsApp del cumpleañero">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0.75rem;">
+            <label for="host-map-input" style="font-size:10px;">Enlace de Google Maps (Ubicación)</label>
+            <input type="text" id="host-map-input" class="inp" placeholder="https://maps.app.goo.gl/... o embed code">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0.75rem;">
+            <label for="host-firebase-input" style="font-size:10px;">URL de Firebase Realtime Database (Nube)</label>
+            <input type="text" id="host-firebase-input" class="inp" placeholder="ej: https://proyecto-cumple-rtdb.firebaseio.com">
+          </div>
+          
+          <button class="btn-primary" onclick="saveHostConfig()">Guardar Configuración</button>
+        </div>
+      </section>
+
+      <!-- PANEL 2 — CÓMO LLEGAR -->
+      <section class="panel" id="panel-llegar">
+        <h2 class="panel-title">Ubicación del <span>evento</span></h2>
+
+        <div class="card">
+          <!-- Mapa Embebido -->
+          <iframe id="map-iframe" class="map-frame" src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d955.5337447438586!2d-64.83752942315978!3d-30.69930238894274!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzDCsDQxJzU1LjYiUyA2NMKwNTAnMTMuMSJX!5e1!3m2!1ses!2sar!4v1780007607902!5m2!1ses!2sar" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+          <!-- Warning Box -->
+          <div class="warning-box">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            <span>Lugar alejado: descargá Google Maps offline de la zona antes de salir.</span>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:0.5rem;">
+            <a href="https://maps.google.com" target="_blank" id="open-maps-btn" class="btn-primary" style="text-decoration:none;">
+              <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/></svg>
+              Abrir en Google Maps
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL 3 — MENÚ -->
+      <section class="panel" id="panel-menu">
+        <h2 class="panel-title">Menú del <span>evento</span></h2>
+
+        <div class="menu-grid">
+          <!-- Para Picar -->
+          <div class="menu-section">
+            <div class="menu-section-title">🧀 Para picar</div>
+            <ul class="menu-list">
+              <li class="menu-item">
+                <div class="menu-item-head">🧀 Picada de fiambres</div>
+                <div class="menu-item-note">Quesos y embutidos para aceitar las mandíbulas y hablar de reuma.</div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Principal -->
+          <div class="menu-section">
+            <div class="menu-section-title">🥘 Principal</div>
+            <ul class="menu-list">
+              <li class="menu-item">
+                <div class="menu-item-head">🥘 Pollo al disco</div>
+                <div class="menu-item-note">El plato estrella que el cumpleañero viene perfeccionando desde 1810.</div>
+              </li>
+              <li class="menu-item">
+                <div class="menu-item-head">🥩 Algo a la parrilla</div>
+                <div class="menu-item-note">Para acompañar y verificar que los dientes todavía aguanten carne.</div>
+              </li>
+              <li class="menu-item">
+                <div class="menu-item-head">🥗 Guarniciones varias</div>
+                <div class="menu-item-note">Acompañamientos verdes aptos para digestiones pesadas y dentaduras cansadas.</div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Postre -->
+          <div class="menu-section">
+            <div class="menu-section-title">🍦 Postre</div>
+            <ul class="menu-list">
+              <li class="menu-item">
+                <div class="menu-item-head">🎂 Torta de cumpleaños</div>
+                <div class="menu-item-note">Para soplar las velitas y festejar el pre 40.</div>
+              </li>
+              <li class="menu-item">
+                <div class="menu-item-head">🍬 Cositas dulces</div>
+                <div class="menu-item-note">Mesa dulce para subirle el azúcar a todos antes de dormir la siesta.</div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Bebidas -->
+          <div class="menu-section">
+            <div class="menu-section-title">🍺 Bebidas</div>
+            <ul class="menu-list">
+              <li class="menu-item">
+                <div class="menu-item-head">💧 Agua y hielo</div>
+                <div class="menu-item-note">Provistos en cantidad industrial para cuidar el único riñón útil que le queda al anfitrión.</div>
+              </li>
+              <li class="menu-item">
+                <div class="menu-item-head">🍺 Alcohol (¡EXCLUSIVO: TRAÉ LO TUYO!)</div>
+                <div class="menu-item-note" style="color: var(--yellow); font-weight: bold;">Joako pone agua y hielo, pero CADA UNO debe traer el alcohol que consumirá para no quedarnos cortos bajo ningún concepto.</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="menu-footer">
+          "Si tenés alguna restricción alimentaria, avisale a Joako antes de que se olvide por la demencia senil."
+        </div>
+      </section>
+
+      <!-- PANEL 4 — MÚSICA -->
+      <section class="panel" id="panel-musica">
+        <h2 class="panel-title">Música de la <span>fiesta</span></h2>
+
+        <div class="card">
+          <!-- Spotify Player -->
+          <div class="spotify-iframe-container" id="spotify-iframe-container">
+            <!-- Reemplazado dinámicamente -->
+          </div>
+
+          <!-- Pedí un tema -->
+          <div class="music-suggestions">
+            <div class="card-title">
+              <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#1DB954;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5zm4 4h-2v-5h2v5zm0-7h-2V7h2v2z"/></svg>
+              Sugerí un tema a la playlist
+            </div>
+            
+            <div style="display:flex; gap:0.5rem; margin-bottom: 1rem;">
+              <input type="text" id="song-input" class="inp" placeholder="Artista — Canción" maxlength="80">
+              <button class="btn-primary" style="width:auto;" onclick="handleAddSong()">Sugerir</button>
+            </div>
+
+            <p style="font-size:11px; color:var(--fg-dim); margin-bottom: 0.5rem;">Sugerencias acumuladas:</p>
+            <div class="songs-list" id="songs-list">
+              <!-- Dinámico -->
+            </div>
+          </div>
+
+          <!-- Host Settings for Spotify -->
+          <div style="margin-top: 1.5rem;">
+            <div class="collapse-header" onclick="togglePlaylistSettings()">
+              <span>⚙️ Configurar playlist de Spotify (Host)</span>
+              <span id="collapse-arrow">▼</span>
+            </div>
+            
+            <div class="collapse-content" id="playlist-settings-content">
+              <p style="font-size:11px; color:var(--fg-muted); margin-bottom:0.5rem;">Ingresá el ID de la Playlist de Spotify o el enlace completo para cambiar el reproductor de arriba.</p>
+              <div class="host-panel-inputs">
+                <input type="text" id="host-spotify-input" class="inp" placeholder="ID o link de playlist">
+                <button class="btn-primary" style="width:auto;" onclick="updateSpotifyPlaylist()">Actualizar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL 5 — FOTOS -->
+      <section class="panel" id="panel-fotos">
+        <h2 class="panel-title">Fotos del <span>momento</span></h2>
+
+        <div class="card">
+          <!-- Upload Zone -->
+          <div class="upload-zone" id="drop-zone" onclick="triggerFileInput()">
+            <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+            <p>Hacé click o arrastrá fotos acá para subirlas</p>
+            <span>Formatos soportados: JPG, PNG.</span>
+            <input type="file" id="photo-file-input" accept="image/*" multiple style="display:none;" onchange="handlePhotoUpload(event)">
+          </div>
+
+          <!-- Photos Grid -->
+          <div id="photo-grid-container">
+            <div class="photo-empty" id="photos-empty-state">
+              Aún no se han subido fotos. ¡Sé el primero en compartir!
+            </div>
+            <div class="photos-grid" id="photos-grid" style="display:none;">
+              <!-- Dinámico -->
+            </div>
+          </div>
+
+          <!-- Info Note -->
+          <div class="photos-note">
+            📸 <strong>Nota informativa:</strong> Las fotos se guardan en tiempo real en la nube para que Joako y todos los invitados las puedan ver y descargar cuando quieran.
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL 6 — MOVILIDAD -->
+      <section class="panel" id="panel-movilidad">
+        <h2 class="panel-title">Movilidad y <span>carpooling</span></h2>
+
+        <!-- Autos Disponibles -->
+        <div class="card">
+          <div class="card-title">🚘 Autos con lugares disponibles</div>
+          
+          <div class="rides-container" id="rides-container">
+            <!-- Dinámico -->
+          </div>
+
+          <!-- Formulario Publicar Auto -->
+          <div style="border-top: 1px dashed var(--border); padding-top: 1.25rem; margin-top: 0.75rem;">
+            <div class="card-title" style="margin-bottom:0.75rem;">📣 Ofrecer un lugar en mi auto</div>
+            
+            <form id="ride-form" onsubmit="handleRideSubmit(event)">
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="ride-name">Tu nombre</label>
+                  <input type="text" id="ride-name" class="inp" placeholder="Ej: Carlos M." required maxlength="30">
+                </div>
+                <div class="form-group">
+                  <label for="ride-from">¿Desde dónde salís?</label>
+                  <input type="text" id="ride-from" class="inp" placeholder="Ej: Centro / Zona Norte" required maxlength="60">
+                </div>
+              </div>
+
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="ride-seats">Lugares disponibles</label>
+                  <select id="ride-seats" class="inp">
+                    <option value="1">1 lugar</option>
+                    <option value="2" selected>2 lugares</option>
+                    <option value="3">3 lugares</option>
+                    <option value="4">4 lugares</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="ride-contact">WhatsApp de contacto</label>
+                  <input type="text" id="ride-contact" class="inp" placeholder="Ej: 3515551234" required maxlength="40">
+                </div>
+              </div>
+
+              <button type="submit" class="btn-primary" style="margin-top:0.5rem;">
+                Publicar auto
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL 7 — REGALOS -->
+      <section class="panel" id="panel-regalos">
+        <h2 class="panel-title">Regalos y <span>colaboración</span></h2>
+        
+        <div class="card" style="border: 1px solid var(--accent-border); background: rgba(200, 160, 80, 0.03); animation: fadeUp 0.6s ease both;">
+          <div class="card-title" style="color: var(--accent); margin-bottom: 0.75rem;">
+            <span>🎁 Regalo / Colaboración</span>
+          </div>
+          <p style="font-size: 13px; color: var(--fg-muted); margin-bottom: 1.25rem; line-height: 1.4;">
+            Tu presencia es mi mejor regalo. Pero si querés colaborar con el festejo (asado, bebidas, pileta) o hacerme un presente, te dejo mi Alias de transferencia:
+          </p>
+          
+          <div style="display: flex; gap: 0.5rem; align-items: center; background: rgba(255,255,255,0.02); padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--border); margin-bottom: 0.25rem;">
+            <div style="flex-grow: 1;">
+              <div style="font-size: 9px; color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.05em;">Alias Mercado Pago / CBU</div>
+              <div id="alias-display-val" style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.15rem; color: var(--fg); letter-spacing: -0.01em;">joako.cumple.mp</div>
+            </div>
+            <button class="btn-primary" style="width: auto; padding: 10px 18px; font-size: 12px;" onclick="copyAlias()">Copiar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL 8 — FIRMAS -->
+      <section class="panel" id="panel-firmas">
+        <h2 class="panel-title">Pizarrón de <span>firmas</span></h2>
+        
+        <div class="card">
+          <div class="card-title">📝 Escribir en el pizarrón</div>
+          <form onsubmit="handleSignatureSubmit(event)">
+            <div class="form-group">
+              <textarea id="signature-input" class="inp" placeholder="Dejale tus deseos, anécdotas o un lindo saludo a Joako para su cumple..." style="min-height: 100px; resize: vertical;" required maxlength="200"></textarea>
+              <span style="align-self: flex-end; font-size: 10px; color: var(--fg-dim); margin-top: 0.25rem;" id="signature-char-count">0 / 200</span>
+            </div>
+            <button type="submit" class="btn-primary" style="margin-top: 0.5rem;">
+              Firmar Pizarrón ✍️
+            </button>
+          </form>
+        </div>
+
+        <div class="card" style="background: rgba(0,0,0,0.15); border-color: rgba(200, 160, 80, 0.15);">
+          <div class="card-title" style="color: var(--accent);">📌 Saludos y firmas de los invitados</div>
+          
+          <div id="signatures-container" style="display: flex; flex-direction: column; gap: 1rem; max-height: 400px; overflow-y: auto; padding-right: 4px;">
+            <!-- Dinámico -->
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER / USER INFORMATION -->
+      <footer style="margin-top: 3rem; text-align: center; border-top: 1px solid var(--border); padding-top: 1.5rem; padding-bottom: 2rem;">
+        <p style="font-size: 11px; color: var(--fg-dim);">Conectado como: <span id="footer-user-email" style="color: var(--accent); font-weight:600;"></span></p>
+        <button class="btn-outline" style="margin-top: 0.6rem; padding: 5px 12px; font-size: 10px;" onclick="handleLogout()">Cambiar de usuario / Salir</button>
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- TOAST SYSTEM -->
+  <div class="toast" id="toast">Notificación</div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // --- DATOS DEL EVENTO ---
+    const NOMBRE_FESTEJADO = "Joako";
+    const FECHA_ISO = "2026-06-01T11:30:00-03:00"; // target del countdown (11:30 hs)
+    const FECHA_DISPLAY = "Domingo 1 de junio de 2026 · 11:30 hs";
+    const CIUDAD = "Cruz del Eje, Córdoba";
+    const FORMATO = "Pollo al disco + Parrilla";
+    const SPOTIFY_PLAYLIST_ID_DEFAULT = "37i9dQZF1DXcBWIGoYBM5M";
+
+    // --- STATE MANAGEMENT ---
+    let state = {
+      currentUserEmail: '', // Identidad actual del invitado
+      rsvps: [],      // [{ email: string, name: string, status: 'going'|'maybe'|'no', origin: string, originDetail: string }]
+      rides: [],      // [{ id: string, email: string, name, from, seats: number, contact, full: boolean }]
+      songs: [],      // string[]
+      mapsUrl: 'https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d955.5337447438586!2d-64.83752942315978!3d-30.69930238894274!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzDCsDQxJzU1LjYiUyA2NMKwNTAnMTMuMSJX!5e1!3m2!1ses!2sar!4v1780007607902!5m2!1ses!2sar',    // string
+      playlistId: '', // string
+      signatures: [], // [{ email, name, text, date }]
+      hostAlias: 'joako.cumple.mp',
+      hostWhatsapp: '5493515551234',
+      firebaseUrl: '' // URL de Firebase para la sincronización
+    };
+
+    // Fotos en memoria (no persistidas por tamaño)
+    let photos = [];
+
+    // Estado local de RSVP en el form actual
+    let selectedRsvpStatus = null;
+
+    // Estado de autenticación del administrador en la sesión actual
+    let hostAuthenticated = false;
+
+    // Inicializar aplicación
+    window.addEventListener('DOMContentLoaded', () => {
+      // Limpieza forzada de estado local mediante parámetro en la URL (?clean)
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('clean')) {
+        localStorage.removeItem('cumple-joako-v1');
+        window.location.href = window.location.pathname;
+        return;
+      }
+
+      loadState();
+      initCountdown();
+      
+      if (state.currentUserEmail) {
+        showAppScreen();
+      } else {
+        showLoginScreen();
+      }
+    });
+
+    // Cargar del LocalStorage
+    function loadState() {
+      try {
+        const stored = localStorage.getItem('cumple-joako-v1');
+        if (stored) {
+          state = JSON.parse(stored);
+          // Asegurar integridad de propiedades
+          if (!state.currentUserEmail) state.currentUserEmail = '';
+          if (!state.rsvps) state.rsvps = [];
+          if (!state.rides) state.rides = [];
+          if (!state.songs) state.songs = [];
+          if (!state.mapsUrl || state.mapsUrl.includes('Cruz%20del%20Eje%2C%20C%C3%B3rdoba')) {
+            state.mapsUrl = 'https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d955.5337447438586!2d-64.83752942315978!3d-30.69930238894274!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzDCsDQxJzU1LjYiUyA2NMKwNTAnMTMuMSJX!5e1!3m2!1ses!2sar!4v1780007607902!5m2!1ses!2sar';
+          }
+          if (!state.playlistId) state.playlistId = '';
+          if (!state.signatures) state.signatures = [];
+          if (!state.hostAlias) state.hostAlias = 'joako.cumple.mp';
+          if (!state.hostWhatsapp) state.hostWhatsapp = '5493515551234';
+          if (!state.firebaseUrl) state.firebaseUrl = '';
+        }
+      } catch (e) {
+        console.error("Error al cargar localStorage", e);
+      }
+    }
+
+    // Guardar en LocalStorage
+    function saveState() {
+      try {
+        localStorage.setItem('cumple-joako-v1', JSON.stringify(state));
+      } catch (e) {
+        console.error("Error al guardar en localStorage", e);
+        toast("⚠️ Error de almacenamiento");
+      }
+    }
+
+    // --- ACCESO (LOGIN) LOGIC ---
+    function showLoginScreen() {
+      document.getElementById('login-screen').style.display = 'flex';
+      document.getElementById('app-screen').style.display = 'none';
+    }
+
+    function showAppScreen() {
+      document.getElementById('login-screen').style.display = 'none';
+      const appEl = document.getElementById('app-screen');
+      appEl.style.display = 'block';
+      
+      // Mostrar email en footer y configurar alias display
+      document.getElementById('footer-user-email').textContent = state.currentUserEmail;
+      document.getElementById('alias-display-val').textContent = state.hostAlias;
+
+      // Inicializar componentes del cumple
+      initTabs();
+      initMap();
+      initMapConfirmed();
+      initSpotify();
+      initSongsList();
+      initPhotosZone();
+      initRidesList();
+      initSignatures();
+      preloadHostConfig();
+      updateNoAssistanceWaLink();
+
+      // Evaluar estado de RSVP del invitado
+      const userRsvp = state.rsvps.find(r => r.email === state.currentUserEmail);
+      if (!userRsvp) {
+        wizardSelectedStatus = null;
+        showWizardStep('start');
+      } else {
+        wizardSelectedStatus = userRsvp.status;
+        if (userRsvp.status === 'going') {
+          showWizardStep('confirmed');
+        } else if (userRsvp.status === 'maybe') {
+          showWizardStep('maybe');
+        } else if (userRsvp.status === 'no') {
+          showWizardStep('no');
+        }
+      }
+      
+      // Listener para password del admin
+      const pwdInput = document.getElementById('host-password-input');
+      if (pwdInput) {
+        pwdInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            authenticateHost();
+          }
+        });
+      }
+
+      // Iniciar sincronización con la nube
+      syncWithCloud().then(() => startCloudSync());
+    }
+
+    function handleLogin(event) {
+      event.preventDefault();
+      const emailInput = document.getElementById('login-email-input');
+      const email = emailInput.value.trim().toLowerCase();
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        toast("Por favor, ingresá un correo válido.");
+        return;
+      }
+
+      state.currentUserEmail = email;
+      saveState();
+      
+      toast("👋 ¡Bienvenido a la invitación!");
+      emailInput.value = '';
+      
+      const card = document.querySelector('.login-card');
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(-20px)';
+      card.style.transition = 'all 0.3s ease';
+
+      setTimeout(() => {
+        showAppScreen();
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, 300);
+    }
+
+    function handleLogout() {
+      state.currentUserEmail = '';
+      hostAuthenticated = false;
+      saveState();
+      
+      wizardSelectedStatus = null;
+      document.getElementById('tabs-navigation-container').style.display = 'none';
+      
+      toast("Sesión cerrada");
+      showLoginScreen();
+    }
+
+    // --- SEGURIDAD DEL HOST CONTRASEÑA ---
+    async function verifyHostPassword(password) {
+      const targetHash = "09fc96082d34c2dfc1295d92073b5ea1dc8ef8da95f14dfded011ffb96d3e54b";
+      try {
+        if (window.crypto && window.crypto.subtle) {
+          const enc = new TextEncoder().encode(password);
+          const buf = await crypto.subtle.digest('SHA-256', enc);
+          const hash = Array.from(new Uint8Array(buf))
+            .map(b => b.toString(16).padStart(2, '0'))
+            .join('');
+          return hash === targetHash;
+        }
+      } catch (e) {
+        console.warn("SubtleCrypto no disponible en HTTP local, usando comparación directa.");
+      }
+      return password === "$Hip0p0tam0$";
+    }
+
+    async function authenticateHost() {
+      const pwdInput = document.getElementById('host-password-input');
+      const password = pwdInput.value;
+
+      if (!password) {
+        toast("Ingresá la contraseña");
+        return;
+      }
+
+      const isValid = await verifyHostPassword(password);
+      
+      if (isValid) {
+        hostAuthenticated = true;
+        document.getElementById('host-auth-panel').style.display = 'none';
+        document.getElementById('host-info-panel').style.display = 'block';
+        toast("🔑 Acceso Administrador concedido");
+        pwdInput.value = '';
+      } else {
+        toast("❌ Contraseña incorrecta");
+        pwdInput.value = '';
+        pwdInput.focus();
+      }
+    }
+
+    // --- CONFIGURACIÓN DEL HOST (UNIFICADA EN INFO) ---
+    function preloadHostConfig() {
+      document.getElementById('host-alias-input').value = state.hostAlias;
+      document.getElementById('host-wa-input').value = state.hostWhatsapp;
+      document.getElementById('host-map-input').value = state.mapsUrl;
+      document.getElementById('host-firebase-input').value = state.firebaseUrl || '';
+    }
+
+    function saveHostConfig() {
+      const aliasInput = document.getElementById('host-alias-input');
+      const waInput = document.getElementById('host-wa-input');
+      const mapInput = document.getElementById('host-map-input');
+      const firebaseInput = document.getElementById('host-firebase-input');
+
+      const alias = aliasInput.value.trim();
+      const wa = waInput.value.trim().replace(/\D/g, ''); 
+      const map = mapInput.value.trim();
+      const firebase = firebaseInput.value.trim();
+
+      if (alias) state.hostAlias = alias;
+      if (wa) state.hostWhatsapp = wa;
+      if (map) state.mapsUrl = map;
+      state.firebaseUrl = firebase;
+
+      saveState();
+      
+      document.getElementById('alias-display-val').textContent = state.hostAlias;
+      initMap();
+      initMapConfirmed();
+      updateNoAssistanceWaLink();
+      
+      if (state.firebaseUrl) {
+        syncWithCloud().then(() => {
+          startCloudSync();
+        });
+      } else {
+        if (cloudSyncInterval) {
+          clearInterval(cloudSyncInterval);
+          cloudSyncInterval = null;
+        }
+      }
+      
+      toast("⚙️ Configuración de la invitación guardada");
+      document.getElementById('host-info-panel').style.display = 'none';
+      preloadHostConfig();
+    }
+
+    // --- COPIADO RÁPIDO ALIAS ---
+    function copyAlias() {
+      navigator.clipboard.writeText(state.hostAlias)
+        .then(() => {
+          toast("🎁 ¡Alias copiado al portapapeles!");
+        })
+        .catch(err => {
+          console.error("Error al copiar", err);
+          toast("No se pudo copiar el alias");
+        });
+    }
+
+    // --- TOAST SYSTEM ---
+    let toastTimeout = null;
+    function toast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => el.classList.remove('show'), 2600);
+    }
+
+    // --- COUNTDOWN TIMER ---
+    function initCountdown() {
+      const targetTime = new Date(FECHA_ISO).getTime();
+      const subtitleEl = document.getElementById('hero-subtitle');
+      subtitleEl.textContent = `${FECHA_DISPLAY} · ${CIUDAD}`;
+
+      const daysEl = document.getElementById('cd-days');
+      const hoursEl = document.getElementById('cd-hours');
+      const minsEl = document.getElementById('cd-mins');
+      const secsEl = document.getElementById('cd-secs');
+
+      function updateCountdown() {
+        const now = new Date().getTime();
+        const diff = targetTime - now;
+
+        if (diff <= 0) {
+          daysEl.textContent = "🎉";
+          hoursEl.textContent = "🎉";
+          minsEl.textContent = "🎉";
+          secsEl.textContent = "🎉";
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+        daysEl.textContent = String(days).padStart(2, '0');
+        hoursEl.textContent = String(hours).padStart(2, '0');
+        minsEl.textContent = String(mins).padStart(2, '0');
+        secsEl.textContent = String(secs).padStart(2, '0');
+      }
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    }
+
+    // --- TABS NAVIGATION ---
+    function initTabs() {
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const panels = document.querySelectorAll('.panel');
+
+      tabButtons.forEach(btn => {
+        const clone = btn.cloneNode(true);
+        btn.parentNode.replaceChild(clone, btn);
+      });
+
+      const newTabButtons = document.querySelectorAll('.tab-btn');
+
+      newTabButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetTab = btn.getAttribute('data-tab');
+
+          newTabButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          panels.forEach(p => p.classList.remove('active'));
+          const targetPanel = document.getElementById(`panel-${targetTab}`);
+          if (targetPanel) {
+            targetPanel.classList.add('active');
+            btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          }
+        });
+      });
+    }
+
+    function goToSignaturesTab() {
+      const signaturesTabBtn = document.querySelector('.tab-btn[data-tab="firmas"]');
+      if (signaturesTabBtn) {
+        signaturesTabBtn.click();
+        setTimeout(() => {
+          document.getElementById('signature-input').focus();
+        }, 350);
+      }
+    }
+
+    // --- PANEL 1: RSVP ---
+    // --- PANEL 1: RSVP WIZARD ---
+    let wizardSelectedStatus = null;
+
+    function showWizardStep(step) {
+      const stepStart = document.getElementById('info-sub-start');
+      const stepForm = document.getElementById('info-sub-form');
+      const stepMaybe = document.getElementById('info-sub-maybe');
+      const stepNo = document.getElementById('info-sub-no');
+      const stepConfirmed = document.getElementById('info-sub-confirmed');
+      const navContainer = document.getElementById('tabs-navigation-container');
+      const hostBtnContainer = document.getElementById('host-settings-btn-container');
+
+      // Ocultar todos
+      if (stepStart) stepStart.style.display = 'none';
+      if (stepForm) stepForm.style.display = 'none';
+      if (stepMaybe) stepMaybe.style.display = 'none';
+      if (stepNo) stepNo.style.display = 'none';
+      if (stepConfirmed) stepConfirmed.style.display = 'none';
+
+      const userRsvp = state.rsvps.find(r => r.email === state.currentUserEmail);
+
+      if (step === 'start') {
+        if (stepStart) stepStart.style.display = 'block';
+        navContainer.style.display = 'none';
+        hostBtnContainer.style.display = 'none';
+      } else if (step === 'form') {
+        if (stepForm) stepForm.style.display = 'block';
+        navContainer.style.display = 'none';
+        hostBtnContainer.style.display = 'none';
+        
+        // Cargar nombre
+        document.getElementById('rsvp-wizard-name').value = userRsvp ? userRsvp.name : '';
+        if (userRsvp && userRsvp.guestsCount) {
+          document.getElementById('rsvp-wizard-guests-count').value = userRsvp.guestsCount.toString();
+        } else {
+          document.getElementById('rsvp-wizard-guests-count').value = '1';
+        }
+
+        // Cargar procedencia
+        if (userRsvp) {
+          document.getElementById('rsvp-wizard-origin').value = userRsvp.origin || 'cordoba';
+          document.getElementById('rsvp-wizard-origin-detail').value = userRsvp.originDetail || '';
+          toggleOriginDetail();
+        } else {
+          document.getElementById('rsvp-wizard-origin').value = 'cordoba';
+          document.getElementById('rsvp-wizard-origin-detail').value = '';
+          toggleOriginDetail();
+        }
+      } else if (step === 'maybe') {
+        if (stepMaybe) stepMaybe.style.display = 'block';
+        navContainer.style.display = 'none';
+        hostBtnContainer.style.display = 'none';
+      } else if (step === 'no') {
+        if (stepNo) stepNo.style.display = 'block';
+        navContainer.style.display = 'none';
+        hostBtnContainer.style.display = 'none';
+        
+        // Sincronizar alias en no-voy
+        document.getElementById('alias-clean-karma').textContent = state.hostAlias;
+      } else if (step === 'confirmed') {
+        if (stepConfirmed) stepConfirmed.style.display = 'block';
+        navContainer.style.display = 'block';
+        hostBtnContainer.style.display = 'block';
+        
+        const count = userRsvp ? (userRsvp.guestsCount || 1) : 1;
+        document.getElementById('confirmed-status-text').textContent = `Confirmaste que vas con ${count} ${count === 1 ? 'persona' : 'personas'} en total.`;
+        
+        // Cargar mapa
+        initMapConfirmed();
+
+        // Cargar consejos de viaje
+        const origin = userRsvp ? (userRsvp.origin || 'cordoba') : 'cordoba';
+        const originDetail = userRsvp ? (userRsvp.originDetail || '') : '';
+        renderTravelAdvice(origin, originDetail);
+        
+        // Actualizar counters y lista
+        updateRsvpCounters();
+        renderRsvpList();
+      }
+    }
+
+    function goToWizardStep(step) {
+      if (step === 'form') {
+        wizardSelectedStatus = 'going';
+        showWizardStep('form');
+      } else if (step === 'maybe') {
+        wizardSelectedStatus = 'maybe';
+        saveRsvpImmediate('maybe');
+        showWizardStep('maybe');
+      } else if (step === 'no') {
+        wizardSelectedStatus = 'no';
+        saveRsvpImmediate('no');
+        showWizardStep('no');
+      } else if (step === 'start') {
+        showWizardStep('start');
+      }
+    }
+
+    function saveRsvpImmediate(status) {
+      const existingIndex = state.rsvps.findIndex(r => r.email === state.currentUserEmail);
+      const name = existingIndex !== -1 ? state.rsvps[existingIndex].name : '';
+      const existing = existingIndex !== -1 ? state.rsvps[existingIndex] : null;
+      const rsvpData = {
+        email: state.currentUserEmail,
+        name: name || state.currentUserEmail.split('@')[0],
+        status: status,
+        guestsCount: status === 'going' ? 1 : 0,
+        origin: existing ? (existing.origin || 'cordoba') : 'cordoba',
+        originDetail: existing ? (existing.originDetail || '') : ''
+      };
+      if (existingIndex !== -1) {
+        state.rsvps[existingIndex] = rsvpData;
+      } else {
+        state.rsvps.push(rsvpData);
+      }
+      saveState();
+      cloudSaveRsvp(rsvpData);
+    }
+
+    function handleWizardSubmit(event) {
+      event.preventDefault();
+      
+      const nameInput = document.getElementById('rsvp-wizard-name');
+      const name = nameInput.value.trim();
+      
+      if (!name) {
+        toast("Por favor, ingresá tu nombre.");
+        return;
+      }
+
+      if (!wizardSelectedStatus) {
+        toast("Seleccioná una respuesta: ✅, 🤔 o ❌");
+        return;
+      }
+
+      const guestsCountEl = document.getElementById('rsvp-wizard-guests-count');
+      const guestsCount = wizardSelectedStatus === 'going' ? parseInt(guestsCountEl.value, 10) : 0;
+
+      const originEl = document.getElementById('rsvp-wizard-origin');
+      const originDetailEl = document.getElementById('rsvp-wizard-origin-detail');
+      const origin = originEl ? originEl.value : 'cordoba';
+      const originDetail = originDetailEl ? originDetailEl.value.trim() : '';
+
+      const existingIndex = state.rsvps.findIndex(r => r.email === state.currentUserEmail);
+      const rsvpData = {
+        email: state.currentUserEmail,
+        name: name,
+        status: wizardSelectedStatus,
+        guestsCount: guestsCount,
+        origin: origin,
+        originDetail: originDetail
+      };
+
+      if (existingIndex !== -1) {
+        state.rsvps[existingIndex] = rsvpData;
+      } else {
+        state.rsvps.push(rsvpData);
+      }
+
+      saveState();
+      cloudSaveRsvp(rsvpData);
+      
+      if (wizardSelectedStatus === 'going') {
+        toast("🎉 ¡Confirmación registrada! Acceso concedido.");
+        showWizardStep('confirmed');
+      } else if (wizardSelectedStatus === 'maybe') {
+        toast("🤔 Registrado en duda. ¡Ojalá vengas!");
+        showWizardStep('maybe');
+      } else if (wizardSelectedStatus === 'no') {
+        toast("😢 Lamento que no puedas estar.");
+        showWizardStep('no');
+      }
+    }
+
+    function copyAliasKarma() {
+      navigator.clipboard.writeText(state.hostAlias)
+        .then(() => {
+          toast("🎁 ¡Alias copiado! Tu karma está a salvo.");
+        })
+        .catch(err => {
+          console.error("Error al copiar", err);
+          toast("No se pudo copiar el alias");
+        });
+    }
+
+    function initMapConfirmed() {
+      const mapIframe = document.getElementById('map-iframe-confirmed');
+      const openMapsBtn = document.getElementById('open-maps-btn-confirmed');
+      if (!mapIframe) return;
+
+      if (state.mapsUrl) {
+        if (state.mapsUrl.includes('/embed') || state.mapsUrl.includes('src=')) {
+          let cleanSrc = state.mapsUrl;
+          if (state.mapsUrl.startsWith('<iframe')) {
+            const match = state.mapsUrl.match(/src="([^"]+)"/);
+            if (match && match[1]) cleanSrc = match[1];
+          }
+          mapIframe.src = cleanSrc;
+          if (cleanSrc.includes('-30.69930238894274') || cleanSrc.includes('f7fhwmr11Q1qsxNr9')) {
+            openMapsBtn.href = "https://maps.app.goo.gl/f7fhwmr11Q1qsxNr9";
+          } else {
+            openMapsBtn.href = cleanSrc;
+          }
+        } else {
+          openMapsBtn.href = state.mapsUrl;
+        }
+      } else {
+        openMapsBtn.href = "https://maps.app.goo.gl/f7fhwmr11Q1qsxNr9";
+      }
+    }
+
+    function updateNoAssistanceWaLink() {
+      const link = document.getElementById('no-wa-link');
+      if (link) {
+        const text = encodeURIComponent("Hola Joako, lamento no poder ir a tu cumple de 39. ¡Pero ya me agendé los 40 reales del año que viene!");
+        link.href = `https://wa.me/${state.hostWhatsapp}?text=${text}`;
+      }
+    }
+
+    // --- NUEVAS FUNCIONES DE PROCEDENCIA Y NUBE (ITERACIÓN 10) ---
+    function toggleOriginDetail() {
+      const origin = document.getElementById('rsvp-wizard-origin').value;
+      const group = document.getElementById('rsvp-origin-detail-group');
+      if (origin === 'otro') {
+        group.style.display = 'block';
+        document.getElementById('rsvp-wizard-origin-detail').required = true;
+      } else {
+        group.style.display = 'none';
+        document.getElementById('rsvp-wizard-origin-detail').required = false;
+      }
+    }
+
+    function renderTravelAdvice(origin, originDetail) {
+      const container = document.getElementById('travel-advice-content');
+      if (!container) return;
+
+      let html = '';
+      if (origin === 'cordoba') {
+        html = `
+          <p><strong>Procedencia:</strong> Córdoba Capital / Gran Córdoba</p>
+          <ul style="list-style: none; margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
+            <li>🛣️ <strong>Ruta:</strong> Tomar la Ruta Nacional 38. Son aproximadamente 2h 30m de viaje.</li>
+            <li>👮 <strong>Caminera:</strong> ⚠️ <strong>¡ATENCIÓN!</strong> Hay controles muy estrictos de la Policía Caminera en la ruta (tolerancia cero al alcohol). ¡Busquen un conductor designado!</li>
+            <li>⛽ <strong>Estaciones de servicio:</strong> Tenés estaciones YPF/ACA en La Falda, Capilla del Monte y Cruz del Eje para cargar nafta.</li>
+            <li>🌤️ <strong>Clima:</strong> Suele estar un toque más cálido que en Córdoba, pero traé abrigo porque al atardecer refresca.</li>
+          </ul>
+        `;
+      } else if (origin === 'cruzdeleje') {
+        html = `
+          <p><strong>Procedencia:</strong> Cruz del Eje</p>
+          <ul style="list-style: none; margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
+            <li>🛣️ <strong>Ruta:</strong> Estás al toque, a minutos del festejo.</li>
+            <li>🍺 <strong>Bebida:</strong> ¡Como jugás de local, podés tomarte todo! (Igual cuidate al volver, che).</li>
+            <li>🌤️ <strong>Clima:</strong> Ya conocés la zona, a la tarde refresca así que no te confíes y traé abrigo.</li>
+          </ul>
+        `;
+      } else {
+        const lugar = originDetail || 'tu localidad';
+        html = `
+          <p><strong>Procedencia:</strong> ${lugar}</p>
+          <ul style="list-style: none; margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
+            <li>🛣️ <strong>Consejo de Ruta:</strong> Te recomendamos descargar el mapa offline de Google Maps por las dudas.</li>
+            <li>🌤️ <strong>Clima:</strong> Chequeá el pronóstico de Cruz del Eje y traé abrigo.</li>
+            <li>🚗 <strong>Seguridad:</strong> Manejá con cuidado, respetá las velocidades y recordá que en Córdoba hay caminera estricta.</li>
+          </ul>
+        `;
+      }
+      container.innerHTML = html;
+    }
+
+    function emailToKey(email) {
+      return email.replace(/\./g, '_dot_').replace(/@/g, '_at_');
+    }
+
+    async function syncWithCloud() {
+      if (!state.firebaseUrl) return;
+      const url = state.firebaseUrl.trim().replace(/\/$/, "");
+      
+      try {
+        // 1. Sincronizar RSVPs
+        const rsvpsRes = await fetch(`${url}/rsvps.json`);
+        if (rsvpsRes.ok) {
+          const rsvpsData = await rsvpsRes.json();
+          if (rsvpsData) {
+            state.rsvps = Object.values(rsvpsData);
+          }
+        }
+
+        // 2. Sincronizar Rides
+        const ridesRes = await fetch(`${url}/rides.json`);
+        if (ridesRes.ok) {
+          const ridesData = await ridesRes.json();
+          if (ridesData) {
+            state.rides = Object.values(ridesData);
+          }
+        }
+
+        // 3. Sincronizar Canciones
+        const songsRes = await fetch(`${url}/songs.json`);
+        if (songsRes.ok) {
+          const songsData = await songsRes.json();
+          if (songsData) {
+            state.songs = Object.values(songsData);
+          }
+        }
+
+        // 4. Sincronizar Firmas
+        const signaturesRes = await fetch(`${url}/signatures.json`);
+        if (signaturesRes.ok) {
+          const signaturesData = await signaturesRes.json();
+          if (signaturesData) {
+            state.signatures = Object.values(signaturesData);
+          }
+        }
+
+        // 5. Sincronizar Fotos
+        const photosRes = await fetch(`${url}/photos.json`);
+        if (photosRes.ok) {
+          const photosData = await photosRes.json();
+          if (photosData) {
+            photos = Object.values(photosData);
+          }
+        }
+
+        saveState();
+      } catch (e) {
+        console.error("Error al sincronizar con la nube", e);
+      }
+    }
+
+    async function cloudSaveRsvp(rsvp) {
+      if (!state.firebaseUrl) return;
+      const url = state.firebaseUrl.trim().replace(/\/$/, "");
+      const key = emailToKey(rsvp.email);
+      try {
+        await fetch(`${url}/rsvps/${key}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(rsvp)
+        });
+      } catch (e) {
+        console.error("Error al guardar RSVP en la nube", e);
+      }
+    }
+
+    async function cloudSaveRide(ride) {
+      if (!state.firebaseUrl) return;
+      const url = state.firebaseUrl.trim().replace(/\/$/, "");
+      try {
+        await fetch(`${url}/rides/${ride.id}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(ride)
+        });
+      } catch (e) {
+        console.error("Error al guardar movilidad en la nube", e);
+      }
+    }
+
+    async function cloudDeleteRide(rideId) {
+      if (!state.firebaseUrl) return;
+      const url = state.firebaseUrl.trim().replace(/\/$/, "");
+      try {
+        await fetch(`${url}/rides/${rideId}.json`, {
+          method: 'DELETE'
+        });
+      } catch (e) {
+        console.error("Error al eliminar movilidad de la nube", e);
+      }
+    }
+
+    async function cloudSaveSong(song, index) {
+      if (!state.firebaseUrl) return;
+      const url = state.firebaseUrl.trim().replace(/\/$/, "");
+      try {
+        await fetch(`${url}/songs/${index}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(song)
+        });
+      } catch (e) {
+        console.error("Error al guardar canción en la nube", e);
+      }
+    }
+
+    async function cloudSaveSignature(signature, index) {
+      if (!state.firebaseUrl) return;
+      const url = state.firebaseUrl.trim().replace(/\/$/, "");
+      try {
+        await fetch(`${url}/signatures/${index}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(signature)
+        });
+      } catch (e) {
+        console.error("Error al guardar firma en la nube", e);
+      }
+    }
+
+    async function cloudSavePhoto(photoBase64, index) {
+      if (!state.firebaseUrl) return;
+      const url = state.firebaseUrl.trim().replace(/\/$/, "");
+      try {
+        await fetch(`${url}/photos/${index}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(photoBase64)
+        });
+      } catch (e) {
+        console.error("Error al guardar foto en la nube", e);
+      }
+    }
+
+    let cloudSyncInterval = null;
+    function startCloudSync() {
+      if (cloudSyncInterval) clearInterval(cloudSyncInterval);
+      if (state.firebaseUrl) {
+        cloudSyncInterval = setInterval(async () => {
+          await syncWithCloud();
+          const activeTab = document.querySelector('.tab-btn.active');
+          if (activeTab) {
+            const tabName = activeTab.getAttribute('data-tab');
+            if (tabName === 'info') {
+              updateRsvpCounters();
+              renderRsvpList();
+            } else if (tabName === 'musica') {
+              renderSongsList();
+            } else if (tabName === 'fotos') {
+              renderPhotosGrid();
+            } else if (tabName === 'movilidad') {
+              renderRidesList();
+            } else if (tabName === 'firmas') {
+              renderSignatures();
+            }
+          }
+        }, 10000);
+      }
+    }
+
+    function updateRsvpCounters() {
+      let going = 0, maybe = 0, no = 0;
+      
+      state.rsvps.forEach(r => {
+        const count = r.guestsCount !== undefined ? r.guestsCount : 1;
+        if (r.status === 'going') going += count;
+        else if (r.status === 'maybe') maybe += count;
+        else if (r.status === 'no') no++;
+      });
+
+      document.getElementById('stat-going').textContent = going;
+      document.getElementById('stat-maybe').textContent = maybe;
+      document.getElementById('stat-no').textContent = no;
+    }
+
+    function renderRsvpList() {
+      const listEl = document.getElementById('rsvp-list');
+      listEl.innerHTML = '';
+
+      if (state.rsvps.length === 0) {
+        listEl.innerHTML = '<div style="font-size:12px; color:var(--fg-dim); text-align:center; padding:10px;">Aún no hay confirmaciones</div>';
+        return;
+      }
+
+      const sorted = [...state.rsvps].sort((a, b) => {
+        const order = { going: 1, maybe: 2, no: 3 };
+        return order[a.status] - order[b.status];
+      });
+
+      sorted.forEach(r => {
+        const item = document.createElement('div');
+        item.className = 'rsvp-list-item';
+
+        const nameEl = document.createElement('span');
+        nameEl.className = 'rsvp-name';
+        
+        let countSuffix = '';
+        const count = r.guestsCount !== undefined ? r.guestsCount : 1;
+        if (r.status !== 'no' && count > 1) {
+          countSuffix = ` (+${count - 1})`;
+        }
+        nameEl.textContent = r.name + countSuffix;
+
+        if (r.email === state.currentUserEmail) {
+          const selfBadge = document.createElement('small');
+          selfBadge.style.color = 'var(--accent)';
+          selfBadge.style.marginLeft = '0.4rem';
+          selfBadge.textContent = '(vos)';
+          nameEl.appendChild(selfBadge);
+        }
+
+        const badgeEl = document.createElement('span');
+        badgeEl.className = `rsvp-badge ${r.status}`;
+        
+        let label = 'No voy';
+        if (r.status === 'going') label = 'Confirmado';
+        else if (r.status === 'maybe') label = 'En duda';
+        
+        badgeEl.textContent = label;
+
+        item.appendChild(nameEl);
+        item.appendChild(badgeEl);
+        listEl.appendChild(item);
+      });
+    }
+
+    // --- PANEL 2: CÓMO LLEGAR ---
+    function initMap() {
+      const mapIframe = document.getElementById('map-iframe');
+      const openMapsBtn = document.getElementById('open-maps-btn');
+
+      if (state.mapsUrl) {
+        if (state.mapsUrl.includes('/embed') || state.mapsUrl.includes('src=')) {
+          let cleanSrc = state.mapsUrl;
+          if (state.mapsUrl.startsWith('<iframe')) {
+            const match = state.mapsUrl.match(/src="([^"]+)"/);
+            if (match && match[1]) cleanSrc = match[1];
+          }
+          mapIframe.src = cleanSrc;
+          if (cleanSrc.includes('-30.69930238894274') || cleanSrc.includes('f7fhwmr11Q1qsxNr9')) {
+            openMapsBtn.href = "https://maps.app.goo.gl/f7fhwmr11Q1qsxNr9";
+          } else {
+            openMapsBtn.href = cleanSrc;
+          }
+        } else {
+          openMapsBtn.href = state.mapsUrl;
+        }
+      } else {
+        openMapsBtn.href = "https://maps.app.goo.gl/f7fhwmr11Q1qsxNr9";
+      }
+    }
+
+    function toggleHostPanel(panelName) {
+      if (panelName === 'info') {
+        const authPanel = document.getElementById('host-auth-panel');
+        const infoPanel = document.getElementById('host-info-panel');
+        
+        if (hostAuthenticated) {
+          authPanel.style.display = 'none';
+          infoPanel.style.display = infoPanel.style.display === 'none' ? 'block' : 'none';
+        } else {
+          infoPanel.style.display = 'none';
+          authPanel.style.display = authPanel.style.display === 'none' ? 'block' : 'none';
+          if (authPanel.style.display === 'block') {
+            setTimeout(() => {
+              document.getElementById('host-password-input').focus();
+            }, 100);
+          }
+        }
+      } else {
+        const panel = document.getElementById(`host-${panelName}-panel`);
+        if (panel) {
+          panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+      }
+    }
+
+    // --- PANEL 4: MÚSICA ---
+    function initSpotify() {
+      const container = document.getElementById('spotify-iframe-container');
+      const playlistId = state.playlistId || SPOTIFY_PLAYLIST_ID_DEFAULT;
+      
+      container.innerHTML = `
+        <iframe src="https://open.spotify.com/embed/playlist/${playlistId}?utm_source=generator&theme=0"
+                width="100%" height="352" frameBorder="0" allowfullscreen=""
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      `;
+    }
+
+    function togglePlaylistSettings() {
+      const content = document.getElementById('playlist-settings-content');
+      const arrow = document.getElementById('collapse-arrow');
+      
+      if (content.classList.contains('show')) {
+        content.classList.remove('show');
+        arrow.textContent = '▼';
+      } else {
+        content.classList.add('show');
+        arrow.textContent = '▲';
+      }
+    }
+
+    function updateSpotifyPlaylist() {
+      const inputEl = document.getElementById('host-spotify-input');
+      let val = inputEl.value.trim();
+
+      if (!val) {
+        toast("Ingresá un enlace o ID de playlist válido");
+        return;
+      }
+
+      if (val.includes('/playlist/')) {
+        const parts = val.split('/playlist/');
+        if (parts[1]) {
+          val = parts[1].split('?')[0];
+        }
+      }
+
+      state.playlistId = val;
+      saveState();
+      initSpotify();
+      toast("Playlist actualizada");
+      inputEl.value = '';
+      togglePlaylistSettings();
+    }
+
+    function initSongsList() {
+      renderSongsList();
+
+      const songInput = document.getElementById('song-input');
+      const newSongInput = songInput.cloneNode(true);
+      songInput.parentNode.replaceChild(newSongInput, songInput);
+
+      newSongInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          handleAddSong();
+        }
+      });
+    }
+
+    function renderSongsList() {
+      const listEl = document.getElementById('songs-list');
+      listEl.innerHTML = '';
+
+      if (state.songs.length === 0) {
+        listEl.innerHTML = '<div class="song-empty">Aún no se pidieron canciones.</div>';
+        return;
+      }
+
+      state.songs.forEach(song => {
+        const chip = document.createElement('div');
+        chip.className = 'song-chip';
+        chip.innerHTML = `
+          <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+          <span>${song}</span>
+        `;
+        listEl.appendChild(chip);
+      });
+    }
+
+    function handleAddSong() {
+      const inputEl = document.getElementById('song-input');
+      const song = inputEl.value.trim();
+
+      if (!song) {
+        toast("Escribí el nombre del tema.");
+        return;
+      }
+
+      const cleanSong = song.toLowerCase().replace(/\s+/g, '');
+      const isDuplicate = state.songs.some(s => s.toLowerCase().replace(/\s+/g, '') === cleanSong);
+
+      if (isDuplicate) {
+        toast("Ese tema ya fue sugerido, ¡busquemos otro!");
+        return;
+      }
+
+      state.songs.push(song);
+      saveState();
+      cloudSaveSong(song, state.songs.length - 1);
+      renderSongsList();
+      toast("🎵 ¡Sugerencia agregada con éxito!");
+      inputEl.value = '';
+    }
+
+    // --- PANEL 5: FOTOS ---
+    function initPhotosZone() {
+      const dropZone = document.getElementById('drop-zone');
+
+      const clone = dropZone.cloneNode(true);
+      dropZone.parentNode.replaceChild(clone, dropZone);
+      const newDropZone = document.getElementById('drop-zone');
+
+      ['dragenter', 'dragover'].forEach(eventName => {
+        newDropZone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          newDropZone.classList.add('dragover');
+        }, false);
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        newDropZone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          newDropZone.classList.remove('dragover');
+        }, false);
+      });
+
+      newDropZone.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        handlePhotosFiles(files);
+      });
+    }
+
+    function triggerFileInput() {
+      document.getElementById('photo-file-input').click();
+    }
+
+    function handlePhotoUpload(event) {
+      const files = event.target.files;
+      handlePhotosFiles(files);
+    }
+
+    function handlePhotosFiles(files) {
+      if (!files.length) return;
+
+      let processedCount = 0;
+      const totalFiles = files.length;
+
+      for (let i = 0; i < totalFiles; i++) {
+        const file = files[i];
+
+        if (!file.type.startsWith('image/')) {
+          toast("El archivo debe ser una imagen");
+          continue;
+        }
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (e) => {
+          const img = new Image();
+          img.src = e.target.result;
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const max_size = 800;
+            let width = img.width;
+            let height = img.height;
+
+            if (width > height) {
+              if (width > max_size) {
+                height *= max_size / width;
+                width = max_size;
+              }
+            } else {
+              if (height > max_size) {
+                width *= max_size / height;
+                height = max_size;
+              }
+            }
+            canvas.width = width;
+            canvas.height = height;
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+            photos.push(compressedBase64);
+            
+            const photoIndex = photos.length - 1;
+            cloudSavePhoto(compressedBase64, photoIndex);
+
+            processedCount++;
+            if (processedCount === totalFiles) {
+              renderPhotosGrid();
+              toast("📸 ¡Fotos subidas a la nube!");
+            }
+          };
+        };
+      }
+    }
+
+    // Renderizar fotos
+    function renderPhotosGrid() {
+      const emptyState = document.getElementById('photos-empty-state');
+      const grid = document.getElementById('photos-grid');
+
+      if (photos.length === 0) {
+        emptyState.style.display = 'block';
+        grid.style.display = 'none';
+        return;
+      }
+
+      emptyState.style.display = 'none';
+      grid.style.display = 'grid';
+      grid.innerHTML = '';
+
+      photos.forEach(src => {
+        const card = document.createElement('div');
+        card.className = 'photo-card';
+
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = 'Momento del cumpleaños';
+        img.loading = 'lazy';
+
+        card.appendChild(img);
+        grid.appendChild(card);
+      });
+    }
+
+    // --- PANEL 6: CARPOOLING / MOVILIDAD ---
+    function initRidesList() {
+      renderRidesList();
+    }
+
+    function getInitials(name) {
+      if (!name) return "??";
+      const parts = name.trim().split(/\s+/);
+      if (parts.length >= 2) {
+        return (parts[0][0] + parts[1][0]).toUpperCase();
+      }
+      return parts[0].substring(0, 2).toUpperCase();
+    }
+
+    function renderRidesList() {
+      const container = document.getElementById('rides-container');
+      container.innerHTML = '';
+
+      if (state.rides.length === 0) {
+        container.innerHTML = '<div class="rides-empty">Aún no hay autos registrados. ¿Ofrecés tu auto? 👇</div>';
+        return;
+      }
+
+      state.rides.forEach(ride => {
+        const card = document.createElement('div');
+        card.className = `ride-card ${ride.full ? 'full' : ''}`;
+
+        const avatar = document.createElement('div');
+        avatar.className = 'ride-avatar';
+        avatar.textContent = getInitials(ride.name);
+
+        const info = document.createElement('div');
+        info.className = 'ride-info';
+
+        const head = document.createElement('div');
+        head.className = 'ride-head';
+
+        const driver = document.createElement('span');
+        driver.className = 'ride-driver';
+        driver.textContent = ride.name;
+
+        const badge = document.createElement('span');
+        badge.className = `ride-badge ${ride.full ? 'full' : 'available'}`;
+        badge.textContent = ride.full ? 'Lleno' : `${ride.seats} ${ride.seats === 1 ? 'lugar' : 'lugares'}`;
+
+        head.appendChild(driver);
+        head.appendChild(badge);
+
+        const route = document.createElement('span');
+        route.className = 'ride-route';
+        route.textContent = `Sale de: ${ride.from}`;
+
+        const cleanContact = ride.contact.replace(/\D/g, '');
+        const contactLink = document.createElement('a');
+        contactLink.className = 'ride-contact';
+        contactLink.target = '_blank';
+        if (cleanContact.length >= 8) {
+          contactLink.href = `https://wa.me/${cleanContact}`;
+        } else {
+          contactLink.href = '#';
+        }
+        contactLink.innerHTML = `
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.84.5 3.56 1.36 5.05L2.05 22l5.12-1.34C8.61 21.46 10.26 21.8 12 21.8c5.52 0 10-4.48 10-10S17.52 2 12 2zm3.85 13.1c-.24.71-1.22 1.3-1.68 1.34-.41.04-.92.22-2.73-.53-2.3-1-3.76-3.32-3.87-3.48-.12-.16-.97-1.29-.97-2.46s.62-1.74.84-1.98c.22-.24.48-.3.64-.3.16 0 .32.02.46.02.14 0 .34-.05.52.39.18.44.62 1.52.68 1.64.06.12.1.26.02.42-.08.16-.12.26-.24.4-.12.14-.26.32-.38.42-.14.12-.28.26-.12.54.16.28.72 1.18 1.54 1.91.82.73 1.51.96 1.83 1.1.32.14.5.12.69-.1.18-.22.8-1.03.88-1.25.08-.22.18-.18.32-.12.14.06.91.43 1.07.51.16.08.26.12.3.2.04.08.04.46-.2.17z"/></svg>
+          Contacto: ${ride.contact}
+        `;
+
+        info.appendChild(head);
+        info.appendChild(route);
+        info.appendChild(contactLink);
+
+        card.appendChild(avatar);
+        card.appendChild(info);
+
+        if (ride.email === state.currentUserEmail) {
+          const actions = document.createElement('div');
+          actions.className = 'ride-actions';
+
+          const toggleBtn = document.createElement('button');
+          toggleBtn.className = 'btn-outline';
+          toggleBtn.textContent = ride.full ? 'Reabrir' : 'Lleno';
+          toggleBtn.onclick = () => handleToggleRideFull(ride.id);
+
+          const deleteBtn = document.createElement('button');
+          deleteBtn.className = 'btn-outline';
+          deleteBtn.style.borderColor = 'rgba(208, 96, 96, 0.25)';
+          deleteBtn.style.color = 'var(--red)';
+          deleteBtn.textContent = 'Eliminar';
+          deleteBtn.onclick = () => handleDeleteRide(ride.id);
+
+          actions.appendChild(toggleBtn);
+          actions.appendChild(deleteBtn);
+          card.appendChild(actions);
+        }
+
+        container.appendChild(card);
+      });
+    }
+
+    function handleRideSubmit(event) {
+      event.preventDefault();
+      
+      const nameEl = document.getElementById('ride-name');
+      const fromEl = document.getElementById('ride-from');
+      const seatsEl = document.getElementById('ride-seats');
+      const contactEl = document.getElementById('ride-contact');
+
+      const name = nameEl.value.trim();
+      const from = fromEl.value.trim();
+      const seats = parseInt(seatsEl.value, 10);
+      const contact = contactEl.value.trim();
+
+      if (!name || !from || !contact) {
+        toast("Completá todos los campos.");
+        return;
+      }
+
+      const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+      const ride = {
+        id,
+        email: state.currentUserEmail,
+        name,
+        from,
+        seats,
+        contact,
+        full: false
+      };
+
+      state.rides.push(ride);
+
+      saveState();
+      cloudSaveRide(ride);
+      renderRidesList();
+      toast("🚘 ¡Auto publicado correctamente!");
+
+      fromEl.value = '';
+      seatsEl.value = '2';
+      contactEl.value = '';
+    }
+
+    function handleToggleRideFull(rideId) {
+      const idx = state.rides.findIndex(r => r.id === rideId);
+      if (idx === -1) return;
+
+      const ride = state.rides[idx];
+      if (ride.email !== state.currentUserEmail) {
+        toast("No podés modificar este auto.");
+        return;
+      }
+
+      ride.full = !ride.full;
+      toast(ride.full ? "🚘 Auto marcado como lleno" : "🚘 Asientos disponibles");
+      saveState();
+      cloudSaveRide(ride);
+      renderRidesList();
+    }
+
+    function handleDeleteRide(rideId) {
+      const idx = state.rides.findIndex(r => r.id === rideId);
+      if (idx === -1) return;
+
+      const ride = state.rides[idx];
+      if (ride.email !== state.currentUserEmail) {
+        toast("No podés eliminar este auto.");
+        return;
+      }
+
+      state.rides.splice(idx, 1);
+      toast("🚘 Auto eliminado de la lista");
+      saveState();
+      cloudDeleteRide(rideId);
+      renderRidesList();
+    }
+
+    // --- PANEL 8: GUESTBOOK / PIZARRÓN DE FIRMAS ---
+    function initSignatures() {
+      const textarea = document.getElementById('signature-input');
+      const counter = document.getElementById('signature-char-count');
+      
+      const newTextarea = textarea.cloneNode(true);
+      textarea.parentNode.replaceChild(newTextarea, textarea);
+      
+      newTextarea.addEventListener('input', () => {
+        counter.textContent = `${newTextarea.value.length} / 200`;
+      });
+
+      renderSignatures();
+    }
+
+    function renderSignatures() {
+      const container = document.getElementById('signatures-container');
+      container.innerHTML = '';
+
+      if (state.signatures.length === 0) {
+        container.innerHTML = '<div style="font-size: 13px; color: var(--fg-dim); font-style: italic; text-align: center; padding: 1.5rem 0;">Nadie firmó el pizarrón todavía. ¡Sé el primero!</div>';
+        return;
+      }
+
+      const sorted = [...state.signatures].reverse();
+
+      sorted.forEach(sig => {
+        const bubble = document.createElement('div');
+        bubble.className = 'signature-bubble';
+
+        const header = document.createElement('div');
+        header.className = 'signature-header';
+
+        const author = document.createElement('span');
+        author.className = 'signature-author';
+        author.textContent = sig.name;
+
+        if (sig.email === state.currentUserEmail) {
+          const selfText = document.createElement('small');
+          selfText.style.color = 'var(--accent)';
+          selfText.style.marginLeft = '0.3rem';
+          selfText.textContent = '(vos)';
+          author.appendChild(selfText);
+        }
+
+        const date = document.createElement('span');
+        date.className = 'signature-date';
+        date.textContent = sig.date;
+
+        header.appendChild(author);
+        header.appendChild(date);
+
+        const text = document.createElement('div');
+        text.className = 'signature-text';
+        text.textContent = sig.text;
+
+        bubble.appendChild(header);
+        bubble.appendChild(text);
+        container.appendChild(bubble);
+      });
+    }
+
+    function handleSignatureSubmit(event) {
+      event.preventDefault();
+      const textarea = document.getElementById('signature-input');
+      const text = textarea.value.trim();
+
+      if (!text) {
+        toast("Escribí un mensaje antes de firmar.");
+        return;
+      }
+
+      const userRsvp = state.rsvps.find(r => r.email === state.currentUserEmail);
+      let name = "";
+      if (userRsvp) {
+        name = userRsvp.name;
+      } else {
+        name = state.currentUserEmail.split('@')[0];
+      }
+
+      const dateOptions = { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' };
+      const dateStr = new Date().toLocaleDateString('es-AR', dateOptions);
+
+      const signature = {
+        email: state.currentUserEmail,
+        name: name,
+        text: text,
+        date: dateStr
+      };
+
+      state.signatures.push(signature);
+
+      saveState();
+      cloudSaveSignature(signature, state.signatures.length - 1);
+      renderSignatures();
+      
+      toast("✍️ ¡Pizarrón firmado con éxito!");
+      textarea.value = '';
+      document.getElementById('signature-char-count').textContent = '0 / 200';
+    }
+  </script>
+</body>
+</html>
