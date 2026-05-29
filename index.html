@@ -255,6 +255,16 @@
       margin: 0 auto;
     }
 
+    /* Mensajes de hero según fase (se ocultan por defecto; el JS pone la clase en <body>) */
+    .hero-msg {
+      display: none;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin-top: 1rem;
+      animation: fadeUp 0.6s ease;
+    }
+
     .countdown-box {
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid var(--border);
@@ -1267,6 +1277,22 @@
     #panel-confirmacion { order: 10; }
     #host-blocks { order: 11; }
     main.wrapper > footer { order: 12; }
+    #panel-encuesta { order: 13; }
+
+    /* --- FASE DURANTE: "hoy es el día" + fotos/música arriba --- */
+    .phase-durante #countdown { display: none; }
+    .phase-durante #hero-hoy { display: block; }
+    .phase-durante #panel-fotos { order: -2; }
+    .phase-durante #panel-musica { order: -1; }
+
+    /* --- FASE POST: "gracias por venir" + álbum y encuesta arriba --- */
+    .phase-post #countdown { display: none; }
+    .phase-post #hero-gracias { display: block; }
+    .phase-post #panel-fotos { order: -2; }
+    .phase-post #panel-encuesta { order: -1; }
+
+    /* La encuesta de recuerdos solo se muestra en la fase post */
+    body:not(.phase-post) #panel-encuesta { display: none; }
   </style>
 </head>
 <body>
@@ -1330,6 +1356,10 @@
               <div class="countdown-label">Seg</div>
             </div>
           </div>
+
+          <!-- Mensajes de hero según la fase del evento (durante / post) -->
+          <div id="hero-hoy" class="hero-msg">🎉 ¡Hoy es el día! 🎉</div>
+          <div id="hero-gracias" class="hero-msg">🥳 ¡Gracias por venir!</div>
         </header>
       </div>
     </div>
@@ -1913,6 +1943,43 @@
         </div>
       </section>
 
+      <!-- PANEL — ENCUESTA DE RECUERDOS (solo fase POST) -->
+      <section class="panel" id="panel-encuesta">
+        <h2 class="panel-title">Muro de <span>recuerdos</span></h2>
+
+        <div class="card" style="border: 1px solid var(--accent-border); box-shadow: 0 4px 20px rgba(200, 160, 80, 0.05);">
+          <div class="card-title">🍗 ¿Cómo estuvo el pollo al disco?</div>
+          <form onsubmit="handleRecuerdoSubmit(event)">
+            <div class="form-group">
+              <div id="recuerdo-stars" style="display: flex; gap: 0.4rem; font-size: 1.8rem; cursor: pointer; margin-bottom: 0.5rem;">
+                <span class="recuerdo-star" data-val="1">☆</span>
+                <span class="recuerdo-star" data-val="2">☆</span>
+                <span class="recuerdo-star" data-val="3">☆</span>
+                <span class="recuerdo-star" data-val="4">☆</span>
+                <span class="recuerdo-star" data-val="5">☆</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>¿Qué fue lo mejor del cumple?</label>
+              <input id="recuerdo-best" class="inp" type="text" placeholder="El pollo al disco, la sobremesa, la previa..." maxlength="120" />
+            </div>
+            <button type="submit" class="btn-primary" style="margin-top: 0.5rem;">
+              Dejar mi recuerdo ⭐
+            </button>
+          </form>
+        </div>
+
+        <div class="card" style="background: rgba(0,0,0,0.15); border-color: rgba(200, 160, 80, 0.15);">
+          <div class="card-title" style="color: var(--accent);">📊 Lo que dejó el cumple</div>
+          <div id="recuerdos-summary" style="font-size: 13px; color: var(--fg-dim); margin-bottom: 1rem;">
+            <!-- Dinámico: promedio + cantidad de votos -->
+          </div>
+          <div id="recuerdos-container" style="display: flex; flex-direction: column; gap: 1rem; max-height: 400px; overflow-y: auto; padding-right: 4px;">
+            <!-- Dinámico -->
+          </div>
+        </div>
+      </section>
+
       <!-- FOOTER / USER INFORMATION -->
       <footer style="margin-top: 3rem; text-align: center; border-top: 1px solid var(--border); padding-top: 1.5rem; padding-bottom: 2rem;">
         <p style="font-size: 11px; color: var(--fg-dim);">Conectado como: <span id="footer-user-email" style="color: var(--accent); font-weight:600;"></span></p>
@@ -1933,6 +2000,30 @@
     const FECHA_DISPLAY = "Domingo 1 de junio de 2026 · 11:30 hs";
     const CIUDAD = "Cruz del Eje, Córdoba";
     const FORMATO = "Pollo al disco + Parrilla";
+
+    // --- FASE DEL EVENTO (antes / durante / post) ---
+    const EVENT_DAY_START = new Date('2026-06-01T00:00:00-03:00').getTime(); // arranca el "día del cumple"
+    const EVENT_DAY_END   = new Date('2026-06-02T00:00:00-03:00').getTime(); // a partir de acá es "post"
+
+    // Devuelve la fase actual del evento. Permite override de testing con ?fase=antes|durante|post
+    function getEventPhase() {
+      const o = new URLSearchParams(location.search).get('fase');
+      if (['antes', 'durante', 'post'].includes(o)) return o;
+      const now = Date.now();
+      if (now < EVENT_DAY_START) return 'antes';
+      if (now < EVENT_DAY_END) return 'durante';
+      return 'post';
+    }
+
+    // Aplica la clase de fase al <body> (controla hero y orden de paneles por CSS)
+    let appliedPhase = null;
+    function applyEventPhase() {
+      const phase = getEventPhase();
+      if (phase === appliedPhase) return;
+      appliedPhase = phase;
+      document.body.classList.remove('phase-antes', 'phase-durante', 'phase-post');
+      document.body.classList.add('phase-' + phase);
+    }
     const SPOTIFY_PLAYLIST_ID_DEFAULT = "0H8Re6R99d9CwPUfAQ3ykF";
     
     // URL POR DEFECTO DE FIREBASE REALTIME DATABASE (MANDATORIO PARA PRODUCCIÓN)
@@ -1948,6 +2039,7 @@
       mapsUrl: 'https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d955.5337447438586!2d-64.83752942315978!3d-30.69930238894274!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzDCsDQxJzU1LjYiUyA2NMKwNTAnMTMuMSJX!5e1!3m2!1ses!2sar!4v1780007607902!5m2!1ses!2sar',    // string
       playlistId: '', // string
       signatures: [], // [{ email, name, text, date }]
+      recuerdos: [],  // [{ email, name, rating: number(1-5), best: string, date }] — encuesta post cumple
       hostAlias: 'cumple.joako',
       hostCbu: '3840200500000000530121',
       hostWhatsapp: '5493515551234',
@@ -1975,7 +2067,8 @@
 
       loadState();
       initCountdown();
-      
+      applyEventPhase();
+
       if (state.currentUserEmail) {
         showAppScreen();
       } else {
@@ -1999,6 +2092,7 @@
           }
           if (!state.playlistId) state.playlistId = '';
           if (!state.signatures) state.signatures = [];
+          if (!state.recuerdos) state.recuerdos = [];
           if (!state.hostAlias || state.hostAlias === 'joako.cumple.mp') state.hostAlias = 'cumple.joako';
           if (!state.hostCbu) state.hostCbu = '3840200500000000530121';
           if (!state.hostWhatsapp) state.hostWhatsapp = '5493515551234';
@@ -2047,6 +2141,7 @@
       initPhotosZone();
       initRidesList();
       initSignatures();
+      initRecuerdos();
       preloadHostConfig();
       updateNoAssistanceWaLink();
 
@@ -2315,6 +2410,7 @@
       const secsEl = document.getElementById('cd-secs');
 
       function updateCountdown() {
+        applyEventPhase(); // detecta el cambio de fase (ej: rollover de medianoche durante la fiesta)
         const now = new Date().getTime();
         const diff = targetTime - now;
 
@@ -2344,7 +2440,7 @@
     // --- TABS NAVIGATION ---
     // --- LANDING ÚNICA (sin pestañas) ---
     // Muestra u oculta las secciones que solo aplican una vez confirmada la asistencia.
-    const LANDING_PANEL_IDS = ['panel-viaje', 'panel-ubicacion', 'panel-fotos', 'panel-musica', 'panel-firmas', 'panel-movilidad', 'panel-regalos', 'panel-menu', 'panel-confirmacion'];
+    const LANDING_PANEL_IDS = ['panel-viaje', 'panel-ubicacion', 'panel-fotos', 'panel-musica', 'panel-firmas', 'panel-movilidad', 'panel-regalos', 'panel-menu', 'panel-confirmacion', 'panel-encuesta'];
 
     function setLandingPanelsVisible(show) {
       LANDING_PANEL_IDS.forEach(id => {
@@ -2434,6 +2530,7 @@
         renderPhotosGrid();
         renderRidesList();
         renderSignatures();
+        renderRecuerdos();
       }
     }
 
@@ -2690,6 +2787,15 @@
           }
         }
 
+        // 4.b Sincronizar Recuerdos (encuesta post cumple)
+        const recuerdosRes = await fetch(`${url}/recuerdos.json`);
+        if (recuerdosRes.ok) {
+          const recuerdosData = await recuerdosRes.json();
+          if (recuerdosData) {
+            state.recuerdos = Object.values(recuerdosData);
+          }
+        }
+
         // 5. Sincronizar Fotos
         const photosRes = await fetch(`${url}/photos.json`);
         if (photosRes.ok) {
@@ -2795,6 +2901,20 @@
       }
     }
 
+    async function cloudSaveRecuerdo(recuerdo, index) {
+      if (!state.firebaseUrl) return;
+      const url = state.firebaseUrl.trim().replace(/\/$/, "");
+      try {
+        await fetch(`${url}/recuerdos/${index}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(recuerdo)
+        });
+      } catch (e) {
+        console.error("Error al guardar recuerdo en la nube", e);
+      }
+    }
+
     async function cloudSavePhoto(photoBase64, index) {
       if (!state.firebaseUrl) return;
       const url = state.firebaseUrl.trim().replace(/\/$/, "");
@@ -2810,11 +2930,21 @@
     }
 
     let cloudSyncInterval = null;
+    let lastSeenPhotoCount = null; // para el feed de fotos en vivo (avisar fotos nuevas)
     function startCloudSync() {
       if (cloudSyncInterval) clearInterval(cloudSyncInterval);
       if (state.firebaseUrl) {
         cloudSyncInterval = setInterval(async () => {
           await syncWithCloud();
+
+          // Feed de fotos en vivo: avisar cuando llegan fotos nuevas durante la fiesta.
+          // La primera pasada (null) no dispara aviso para no contar el álbum existente.
+          if (lastSeenPhotoCount !== null && photos.length > lastSeenPhotoCount && getEventPhase() === 'durante') {
+            const nuevas = photos.length - lastSeenPhotoCount;
+            toast(`📸 ¡${nuevas} foto${nuevas > 1 ? 's' : ''} nueva${nuevas > 1 ? 's' : ''} en la fiesta!`);
+          }
+          lastSeenPhotoCount = photos.length;
+
           // Landing única: si el invitado ya confirmó, refrescamos todas las secciones visibles.
           const confirmedVisible = document.getElementById('panel-confirmacion');
           if (confirmedVisible && confirmedVisible.classList.contains('active')) {
@@ -2824,6 +2954,7 @@
             renderPhotosGrid();
             renderRidesList();
             renderSignatures();
+            renderRecuerdos();
           }
         }, 10000);
       }
@@ -3161,7 +3292,9 @@
       grid.style.display = 'grid';
       grid.innerHTML = '';
 
-      photos.forEach(src => {
+      // Durante y después del cumple mostramos las fotos más nuevas primero (feed en vivo / álbum).
+      const list = getEventPhase() !== 'antes' ? [...photos].reverse() : photos;
+      list.forEach(src => {
         const card = document.createElement('div');
         card.className = 'photo-card';
 
@@ -3447,6 +3580,123 @@
       toast("✍️ ¡Pizarrón firmado con éxito!");
       textarea.value = '';
       document.getElementById('signature-char-count').textContent = '0 / 200';
+    }
+
+    // --- PANEL: ENCUESTA DE RECUERDOS (post cumple) ---
+    let recuerdoRating = 0;
+
+    function paintRecuerdoStars() {
+      document.querySelectorAll('#recuerdo-stars .recuerdo-star').forEach(star => {
+        const val = parseInt(star.dataset.val, 10);
+        star.textContent = val <= recuerdoRating ? '★' : '☆';
+        star.style.color = val <= recuerdoRating ? 'var(--accent)' : 'var(--fg-dim)';
+      });
+    }
+
+    function initRecuerdos() {
+      recuerdoRating = 0;
+      document.querySelectorAll('#recuerdo-stars .recuerdo-star').forEach(star => {
+        star.addEventListener('click', () => {
+          recuerdoRating = parseInt(star.dataset.val, 10);
+          paintRecuerdoStars();
+        });
+      });
+      paintRecuerdoStars();
+      renderRecuerdos();
+    }
+
+    function renderRecuerdos() {
+      const summary = document.getElementById('recuerdos-summary');
+      const container = document.getElementById('recuerdos-container');
+      if (!summary || !container) return;
+
+      const recuerdos = state.recuerdos || [];
+      container.innerHTML = '';
+
+      if (recuerdos.length === 0) {
+        summary.textContent = 'Todavía nadie dejó su recuerdo. ¡Sé el primero en puntuar el pollo al disco!';
+        return;
+      }
+
+      const conRating = recuerdos.filter(r => r.rating > 0);
+      if (conRating.length > 0) {
+        const prom = conRating.reduce((acc, r) => acc + r.rating, 0) / conRating.length;
+        summary.innerHTML = `🍗 Pollo al disco: <strong style="color: var(--accent);">${prom.toFixed(1)} ★</strong> · ${conRating.length} voto${conRating.length > 1 ? 's' : ''}`;
+      } else {
+        summary.textContent = 'Recuerdos del cumple:';
+      }
+
+      const sorted = [...recuerdos].reverse();
+      sorted.forEach(rec => {
+        if (!rec.best && !rec.rating) return;
+        const bubble = document.createElement('div');
+        bubble.className = 'signature-bubble';
+
+        const header = document.createElement('div');
+        header.className = 'signature-header';
+
+        const author = document.createElement('span');
+        author.className = 'signature-author';
+        author.textContent = rec.name;
+        if (rec.email === state.currentUserEmail) {
+          const selfText = document.createElement('small');
+          selfText.style.color = 'var(--accent)';
+          selfText.style.marginLeft = '0.3rem';
+          selfText.textContent = '(vos)';
+          author.appendChild(selfText);
+        }
+
+        const date = document.createElement('span');
+        date.className = 'signature-date';
+        date.textContent = rec.date;
+
+        header.appendChild(author);
+        header.appendChild(date);
+
+        const text = document.createElement('div');
+        text.className = 'signature-text';
+        const stars = rec.rating ? '★'.repeat(rec.rating) + '☆'.repeat(5 - rec.rating) : '';
+        text.innerHTML = (stars ? `<span style="color: var(--accent);">${stars}</span><br>` : '') + (rec.best ? rec.best : '');
+
+        bubble.appendChild(header);
+        bubble.appendChild(text);
+        container.appendChild(bubble);
+      });
+    }
+
+    function handleRecuerdoSubmit(event) {
+      event.preventDefault();
+      const bestInput = document.getElementById('recuerdo-best');
+      const best = bestInput.value.trim();
+
+      if (!recuerdoRating && !best) {
+        toast("Puntuá el pollo al disco o contanos qué fue lo mejor.");
+        return;
+      }
+
+      const userRsvp = state.rsvps.find(r => r.email === state.currentUserEmail);
+      const name = userRsvp ? userRsvp.name : state.currentUserEmail.split('@')[0];
+
+      const dateOptions = { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' };
+      const dateStr = new Date().toLocaleDateString('es-AR', dateOptions);
+
+      const recuerdo = {
+        email: state.currentUserEmail,
+        name: name,
+        rating: recuerdoRating,
+        best: best,
+        date: dateStr
+      };
+
+      state.recuerdos.push(recuerdo);
+      saveState();
+      cloudSaveRecuerdo(recuerdo, state.recuerdos.length - 1);
+      renderRecuerdos();
+
+      toast("⭐ ¡Gracias por tu recuerdo!");
+      bestInput.value = '';
+      recuerdoRating = 0;
+      paintRecuerdoStars();
     }
   </script>
 </body>
