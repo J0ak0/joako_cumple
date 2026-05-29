@@ -623,6 +623,15 @@
       color: var(--fg);
     }
 
+    /* Email visible solo para el host (Joako autenticado) */
+    .rsvp-email-host {
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 500;
+      margin-top: 2px;
+      word-break: break-all;
+    }
+
     .rsvp-badge {
       font-size: 12px;
       padding: 3px 10px;
@@ -1700,8 +1709,14 @@
           </div>
           
           <button class="btn-primary" onclick="saveHostConfig()">Guardar Configuración</button>
+
+          <div style="border-top: 1px dashed var(--border); margin-top: 1rem; padding-top: 1rem;">
+            <label style="font-size:10px; color:var(--fg-muted);">📧 Correos de los invitados (privado)</label>
+            <p style="font-size:10px; color:var(--fg-dim); margin: 0.25rem 0 0.5rem;">Solo vos ves esto. Los emails también aparecen bajo cada nombre en la lista de confirmados.</p>
+            <button type="button" class="btn-outline" style="font-size:12px;" onclick="copyAllEmails()">Copiar todos los correos</button>
+          </div>
         </div>
-      
+
       </div>
 
 
@@ -2154,6 +2169,8 @@
         document.getElementById('host-info-panel').style.display = 'block';
         toast("🔑 Acceso Administrador concedido");
         pwdInput.value = '';
+        // Re-render para revelar los emails de los invitados (solo para el host)
+        renderRsvpList();
       } else {
         toast("❌ Contraseña incorrecta");
         pwdInput.value = '';
@@ -2249,6 +2266,30 @@
         .catch(err => {
           console.error("Error al copiar", err);
           toast("No se pudo copiar el CBU");
+        });
+    }
+
+    // Copia los correos de todos los invitados (solo para el host)
+    function copyAllEmails() {
+      if (!hostAuthenticated) {
+        toast("🔒 Solo el host puede ver los correos");
+        return;
+      }
+      const emails = state.rsvps
+        .map(r => r.email)
+        .filter(Boolean);
+      const unique = [...new Set(emails)];
+      if (unique.length === 0) {
+        toast("Todavía no hay correos cargados");
+        return;
+      }
+      navigator.clipboard.writeText(unique.join(', '))
+        .then(() => {
+          toast(`📧 ${unique.length} correo(s) copiado(s)`);
+        })
+        .catch(err => {
+          console.error("Error al copiar", err);
+          toast("No se pudo copiar los correos");
         });
     }
 
@@ -2821,9 +2862,15 @@
         const item = document.createElement('div');
         item.className = 'rsvp-list-item';
 
+        // Contenedor del nombre (+ email visible solo para el host autenticado)
+        const nameWrap = document.createElement('div');
+        nameWrap.style.display = 'flex';
+        nameWrap.style.flexDirection = 'column';
+        nameWrap.style.minWidth = '0';
+
         const nameEl = document.createElement('span');
         nameEl.className = 'rsvp-name';
-        
+
         let countSuffix = '';
         const count = r.guestsCount !== undefined ? r.guestsCount : 1;
         if (r.status !== 'no' && count > 1) {
@@ -2838,17 +2885,26 @@
           selfBadge.textContent = '(vos)';
           nameEl.appendChild(selfBadge);
         }
+        nameWrap.appendChild(nameEl);
+
+        // Email: SOLO visible cuando Joako está autenticado como host
+        if (hostAuthenticated && r.email) {
+          const emailEl = document.createElement('span');
+          emailEl.className = 'rsvp-email-host';
+          emailEl.textContent = r.email;
+          nameWrap.appendChild(emailEl);
+        }
 
         const badgeEl = document.createElement('span');
         badgeEl.className = `rsvp-badge ${r.status}`;
-        
+
         let label = 'No voy';
         if (r.status === 'going') label = 'Confirmado';
         else if (r.status === 'maybe') label = 'En duda';
-        
+
         badgeEl.textContent = label;
 
-        item.appendChild(nameEl);
+        item.appendChild(nameWrap);
         item.appendChild(badgeEl);
         listEl.appendChild(item);
       });
