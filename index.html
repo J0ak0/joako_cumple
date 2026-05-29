@@ -796,6 +796,13 @@
       align-items: center;
       gap: 0.4rem;
       font-weight: 500;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    a.song-chip:hover {
+      background: rgba(29, 185, 84, 0.18);
+      transform: translateY(-1px);
     }
 
     .song-chip svg {
@@ -1708,36 +1715,42 @@
             <!-- Reemplazado dinámicamente -->
           </div>
 
-          <!-- Agregar a la playlist colaborativa -->
+          <!-- MÉTODO 1 (principal): Pedí tu tema sin Spotify -->
           <div class="music-suggestions">
             <div class="card-title">
-              <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#1DB954;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.5 14.5c-.2.3-.6.4-.9.2-2.4-1.5-5.5-1.8-9.1-1-.4.1-.7-.2-.8-.5-.1-.4.2-.7.5-.8 3.9-.9 7.4-.5 10.1 1.2.4.2.4.6.2.9zm1.2-2.7c-.2.4-.7.5-1.1.3-2.8-1.7-7-2.2-10.2-1.2-.4.1-.9-.1-1-.5-.1-.4.1-.9.5-1 3.7-1.1 8.3-.6 11.5 1.4.3.2.5.7.3 1zm.1-2.8C14.5 9 8.9 8.8 5.6 9.8c-.5.2-1.1-.1-1.2-.6-.2-.5.1-1.1.6-1.2 3.8-1.1 10-.9 13.9 1.4.5.3.6.9.4 1.4-.3.4-.9.6-1.4.3z"/></svg>
-              Agregá tu canción a la playlist
+              <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:var(--accent);"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+              Pedí tu tema 🎶
             </div>
             <p style="font-size:13px; color:var(--fg-muted); margin-bottom: 1rem; line-height:1.5;">
-              Es una <strong>playlist colaborativa</strong>: abrila en Spotify, buscá tu tema y agregalo. ¡Va a sonar en el cumple! 🎶
+              La forma más fácil: dejá el tema acá (no necesitás Spotify) y <strong>Joako lo agrega a la playlist</strong>. ¡Cae seguro!
             </p>
-            <a id="add-to-playlist-link" href="#" target="_blank" rel="noopener" class="btn-primary" style="text-decoration:none; background: rgba(29,185,84,0.12); border-color: rgba(29,185,84,0.4); color: var(--spotify);">
-              <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.5 14.5c-.2.3-.6.4-.9.2-2.4-1.5-5.5-1.8-9.1-1-.4.1-.7-.2-.8-.5-.1-.4.2-.7.5-.8 3.9-.9 7.4-.5 10.1 1.2.4.2.4.6.2.9zm1.2-2.7c-.2.4-.7.5-1.1.3-2.8-1.7-7-2.2-10.2-1.2-.4.1-.9-.1-1-.5-.1-.4.1-.9.5-1 3.7-1.1 8.3-.6 11.5 1.4.3.2.5.7.3 1zm.1-2.8C14.5 9 8.9 8.8 5.6 9.8c-.5.2-1.1-.1-1.2-.6-.2-.5.1-1.1.6-1.2 3.8-1.1 10-.9 13.9 1.4.5.3.6.9.4 1.4-.3.4-.9.6-1.4.3z"/></svg>
-              Abrir la playlist en Spotify
-            </a>
-          </div>
-
-          <!-- Sugerencias por texto (respaldo para quien no tiene Spotify) -->
-          <div class="music-suggestions" style="margin-top: 1.25rem; border-top: 1px dashed var(--border); padding-top: 1.25rem;">
-            <div class="card-title" style="font-size:1rem;">
-              💡 ¿No tenés Spotify?
-            </div>
-            <p style="font-size:12px; color:var(--fg-dim); margin-bottom: 0.75rem;">Dejá tu tema acá (Artista — Canción) y lo sumamos nosotros.</p>
             <div style="display:flex; gap:0.5rem; margin-bottom: 1rem;">
               <input type="text" id="song-input" class="inp" placeholder="Artista — Canción" maxlength="80">
-              <button class="btn-primary" style="width:auto;" onclick="handleAddSong()">Sugerir</button>
+              <button class="btn-primary" style="width:auto;" onclick="handleAddSong()">Pedir</button>
             </div>
 
-            <p style="font-size:11px; color:var(--fg-dim); margin-bottom: 0.5rem;">Sugerencias acumuladas:</p>
+            <p style="font-size:11px; color:var(--fg-dim); margin-bottom: 0.5rem;">Temas pedidos por los invitados:</p>
             <div class="songs-list" id="songs-list">
               <!-- Dinámico -->
             </div>
+          </div>
+
+          <!-- MÉTODO 2 (alternativo): agregar directo en Spotify -->
+          <div class="music-suggestions" style="margin-top: 1.25rem; border-top: 1px dashed var(--border); padding-top: 1.25rem;">
+            <div class="card-title" style="font-size:1rem;">
+              <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#1DB954;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.5 14.5c-.2.3-.6.4-.9.2-2.4-1.5-5.5-1.8-9.1-1-.4.1-.7-.2-.8-.5-.1-.4.2-.7.5-.8 3.9-.9 7.4-.5 10.1 1.2.4.2.4.6.2.9zm1.2-2.7c-.2.4-.7.5-1.1.3-2.8-1.7-7-2.2-10.2-1.2-.4.1-.9-.1-1-.5-.1-.4.1-.9.5-1 3.7-1.1 8.3-.6 11.5 1.4.3.2.5.7.3 1zm.1-2.8C14.5 9 8.9 8.8 5.6 9.8c-.5.2-1.1-.1-1.2-.6-.2-.5.1-1.1.6-1.2 3.8-1.1 10-.9 13.9 1.4.5.3.6.9.4 1.4-.3.4-.9.6-1.4.3z"/></svg>
+              ¿Tenés Spotify? Sumalos vos mismo
+            </div>
+            <p style="font-size:12px; color:var(--fg-muted); margin-bottom: 0.5rem; line-height:1.5;">
+              Es una <strong>playlist colaborativa</strong>. Al abrirla, Spotify te va a pedir <strong>unirte como colaborador</strong> (tocá "Unirme" / "Aceptar"). Recién ahí vas a poder buscar y agregar tus temas. 🎧
+            </p>
+            <p style="font-size:11px; color:var(--fg-dim); margin-bottom: 0.85rem; line-height:1.4;">
+              ⚠️ Necesitás cuenta de Spotify (la gratis sirve) e iniciar sesión. Si no te aparece la opción de agregar, es porque todavía no aceptaste unirte como colaborador.
+            </p>
+            <a id="add-to-playlist-link" href="#" target="_blank" rel="noopener" class="btn-outline" style="text-decoration:none; border-color: rgba(29,185,84,0.4); color: var(--spotify); display:flex; justify-content:center; align-items:center; gap:0.4rem;">
+              <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.5 14.5c-.2.3-.6.4-.9.2-2.4-1.5-5.5-1.8-9.1-1-.4.1-.7-.2-.8-.5-.1-.4.2-.7.5-.8 3.9-.9 7.4-.5 10.1 1.2.4.2.4.6.2.9zm1.2-2.7c-.2.4-.7.5-1.1.3-2.8-1.7-7-2.2-10.2-1.2-.4.1-.9-.1-1-.5-.1-.4.1-.9.5-1 3.7-1.1 8.3-.6 11.5 1.4.3.2.5.7.3 1zm.1-2.8C14.5 9 8.9 8.8 5.6 9.8c-.5.2-1.1-.1-1.2-.6-.2-.5.1-1.1.6-1.2 3.8-1.1 10-.9 13.9 1.4.5.3.6.9.4 1.4-.3.4-.9.6-1.4.3z"/></svg>
+              Unirme y agregar en Spotify
+            </a>
           </div>
 
           <!-- Configuración de Spotify movida al panel Host de la pestaña Info -->
@@ -2939,12 +2952,19 @@
       }
 
       state.songs.forEach(song => {
-        const chip = document.createElement('div');
+        // Cada tema pedido es un link que abre la búsqueda en Spotify,
+        // para que el host (o cualquiera) lo encuentre y lo agregue de un toque.
+        const chip = document.createElement('a');
         chip.className = 'song-chip';
+        chip.href = `https://open.spotify.com/search/${encodeURIComponent(song)}`;
+        chip.target = '_blank';
+        chip.rel = 'noopener';
+        chip.title = 'Buscar en Spotify';
         chip.innerHTML = `
           <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
-          <span>${song}</span>
+          <span></span>
         `;
+        chip.querySelector('span').textContent = song;
         listEl.appendChild(chip);
       });
     }
@@ -2970,7 +2990,7 @@
       saveState();
       cloudSaveSong(song, state.songs.length - 1);
       renderSongsList();
-      toast("🎵 ¡Sugerencia agregada con éxito!");
+      toast("🎵 ¡Tema pedido! Joako lo va a sumar a la playlist.");
       inputEl.value = '';
     }
 
