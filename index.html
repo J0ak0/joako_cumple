@@ -1460,13 +1460,13 @@
               Qué lástima que no puedas estar en los 39 años (Pre 40) de Joako. Pero ponete las pilas y **agendá desde ya para el año que viene**, que tiro la casa por la ventana para festejar mis **40 años reales** de verdad. ¡Ahí no podés faltar!
             </p>
             <p style="font-size: 13px; color: var(--fg-muted); margin-bottom: 1.5rem; line-height: 1.5; font-style: italic;">
-              De todas formas, si te sentís mal por clavarme y no venir a comer pollo al disco... podés colaborar con el fondo del festejo transfiriéndome lo que quieras a mi Alias. No es obligatorio, ¡pero limpia el karma al 100%! 😉
+              No hace falta que me regales nada, ¡ya tengo todo! Pero si te sentís mal por clavarme y no venir a comer pollo al disco... una transferencia al fondo anti-artrosis de mis rodillas baquetbolísticas limpia el karma al 100%. 🏀😉 Todo importe es bien recibido, sin pisar la línea.
             </p>
 
             <div style="display: flex; gap: 0.5rem; align-items: center; background: rgba(255,255,255,0.02); padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--border); margin-bottom: 1rem;">
               <div style="flex-grow: 1;">
                 <div style="font-size: 9px; color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.05em;">Alias para limpiar la culpa</div>
-                <div id="alias-clean-karma" style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.15rem; color: var(--fg); letter-spacing: -0.01em;">joako.cumple.mp</div>
+                <div id="alias-clean-karma" style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.15rem; color: var(--fg); letter-spacing: -0.01em;">cumple.joako</div>
               </div>
               <button class="btn-primary" style="width: auto; padding: 10px 18px; font-size: 12px;" onclick="copyAliasKarma()">Copiar</button>
             </div>
@@ -1633,9 +1633,14 @@
           
           <div class="form-group" style="margin-bottom: 0.75rem;">
             <label for="host-alias-input" style="font-size:10px;">Alias de Transferencia (Regalos)</label>
-            <input type="text" id="host-alias-input" class="inp" placeholder="ej: joako.cumple.mp">
+            <input type="text" id="host-alias-input" class="inp" placeholder="ej: cumple.joako">
           </div>
-          
+
+          <div class="form-group" style="margin-bottom: 0.75rem;">
+            <label for="host-cbu-input" style="font-size:10px;">CBU / CVU (Regalos)</label>
+            <input type="text" id="host-cbu-input" class="inp" placeholder="ej: 3840200500000000530121">
+          </div>
+
           <div class="form-group" style="margin-bottom: 0.75rem;">
             <label for="host-wa-input" style="font-size:10px;">WhatsApp del Host (código país + número, ej: 5493515551234)</label>
             <input type="text" id="host-wa-input" class="inp" placeholder="WhatsApp del cumpleañero">
@@ -1796,16 +1801,27 @@
           <div class="card-title" style="color: var(--accent); margin-bottom: 0.75rem;">
             <span>🎁 Regalo / Colaboración</span>
           </div>
-          <p style="font-size: 13px; color: var(--fg-muted); margin-bottom: 1.25rem; line-height: 1.4;">
-            Tu presencia es mi mejor regalo. Pero si querés colaborar con el festejo (asado, bebidas, pileta) o hacerme un presente, te dejo mi Alias de transferencia:
+          <p style="font-size: 13px; color: var(--fg-muted); margin-bottom: 1rem; line-height: 1.5;">
+            Tu presencia es mi mejor regalo. Y mirá que lo digo en serio: <strong>ya tengo todo lo que necesito</strong> (la casa está más llena que colectivo en hora pico), así que <strong>no te compliques buscando qué regalarme</strong>.
           </p>
-          
-          <div style="display: flex; gap: 0.5rem; align-items: center; background: rgba(255,255,255,0.02); padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--border); margin-bottom: 0.25rem;">
-            <div style="flex-grow: 1;">
-              <div style="font-size: 9px; color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.05em;">Alias Mercado Pago / CBU</div>
-              <div id="alias-display-val" style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.15rem; color: var(--fg); letter-spacing: -0.01em;">joako.cumple.mp</div>
+          <p style="font-size: 13px; color: var(--fg-muted); margin-bottom: 1.25rem; line-height: 1.5;">
+            Si igual te pinta hacerme un presente, la jugada más limpia es la <strong>asistencia perfecta</strong>: una transferencia. 🏀 Después de tantos años jugando al básquet en Cruz del Eje, mis rodillas son medalla de oro de la Generación Dorada... pero dorada de puro desgaste. <strong>Todo importe es bien recibido</strong> para el fondo anti-artrosis: desde lo que sale un alfajor hasta lo que sale una Molten oficial. ¡Nada de doble falta, transferí derecho al aro! 😉
+          </p>
+
+          <div style="display: flex; gap: 0.5rem; align-items: center; background: rgba(255,255,255,0.02); padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--border); margin-bottom: 0.5rem;">
+            <div style="flex-grow: 1; min-width: 0;">
+              <div style="font-size: 9px; color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.05em;">Alias Mercado Pago</div>
+              <div id="alias-display-val" style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.15rem; color: var(--fg); letter-spacing: -0.01em;">cumple.joako</div>
             </div>
-            <button class="btn-primary" style="width: auto; padding: 10px 18px; font-size: 12px;" onclick="copyAlias()">Copiar</button>
+            <button class="btn-primary" style="width: auto; padding: 10px 18px; font-size: 12px; flex-shrink: 0;" onclick="copyAlias()">Copiar</button>
+          </div>
+
+          <div style="display: flex; gap: 0.5rem; align-items: center; background: rgba(255,255,255,0.02); padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--border);">
+            <div style="flex-grow: 1; min-width: 0;">
+              <div style="font-size: 9px; color: var(--fg-dim); text-transform: uppercase; letter-spacing: 0.05em;">CBU / CVU</div>
+              <div id="cbu-display-val" style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.95rem; color: var(--fg); letter-spacing: -0.01em; word-break: break-all;">3840200500000000530121</div>
+            </div>
+            <button class="btn-primary" style="width: auto; padding: 10px 18px; font-size: 12px; flex-shrink: 0;" onclick="copyCbu()">Copiar</button>
           </div>
         </div>
       </section>
@@ -1871,7 +1887,8 @@
       mapsUrl: 'https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d955.5337447438586!2d-64.83752942315978!3d-30.69930238894274!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzDCsDQxJzU1LjYiUyA2NMKwNTAnMTMuMSJX!5e1!3m2!1ses!2sar!4v1780007607902!5m2!1ses!2sar',    // string
       playlistId: '', // string
       signatures: [], // [{ email, name, text, date }]
-      hostAlias: 'joako.cumple.mp',
+      hostAlias: 'cumple.joako',
+      hostCbu: '3840200500000000530121',
       hostWhatsapp: '5493515551234',
       firebaseUrl: '' // URL de Firebase para la sincronización
     };
@@ -1921,7 +1938,8 @@
           }
           if (!state.playlistId) state.playlistId = '';
           if (!state.signatures) state.signatures = [];
-          if (!state.hostAlias) state.hostAlias = 'joako.cumple.mp';
+          if (!state.hostAlias || state.hostAlias === 'joako.cumple.mp') state.hostAlias = 'cumple.joako';
+          if (!state.hostCbu) state.hostCbu = '3840200500000000530121';
           if (!state.hostWhatsapp) state.hostWhatsapp = '5493515551234';
           if (!state.firebaseUrl) state.firebaseUrl = FIREBASE_URL_DEFAULT;
         } else {
@@ -1957,6 +1975,8 @@
       // Mostrar email en footer y configurar alias display
       document.getElementById('footer-user-email').textContent = state.currentUserEmail;
       document.getElementById('alias-display-val').textContent = state.hostAlias;
+      const cbuDisplayInit = document.getElementById('cbu-display-val');
+      if (cbuDisplayInit) cbuDisplayInit.textContent = state.hostCbu;
 
       // Inicializar componentes del cumple
       initMap();
@@ -2098,6 +2118,7 @@
     // --- CONFIGURACIÓN DEL HOST (UNIFICADA EN INFO) ---
     function preloadHostConfig() {
       document.getElementById('host-alias-input').value = state.hostAlias;
+      document.getElementById('host-cbu-input').value = state.hostCbu || '';
       document.getElementById('host-wa-input').value = state.hostWhatsapp;
       document.getElementById('host-map-input').value = state.mapsUrl;
       document.getElementById('host-firebase-input').value = state.firebaseUrl || '';
@@ -2106,18 +2127,21 @@
 
     function saveHostConfig() {
       const aliasInput = document.getElementById('host-alias-input');
+      const cbuInput = document.getElementById('host-cbu-input');
       const waInput = document.getElementById('host-wa-input');
       const mapInput = document.getElementById('host-map-input');
       const firebaseInput = document.getElementById('host-firebase-input');
       const spotifyInput = document.getElementById('host-spotify-input');
 
       const alias = aliasInput.value.trim();
-      const wa = waInput.value.trim().replace(/\D/g, ''); 
+      const cbu = cbuInput.value.trim().replace(/\s/g, '');
+      const wa = waInput.value.trim().replace(/\D/g, '');
       const map = mapInput.value.trim();
       const firebase = firebaseInput.value.trim();
       let spotifyVal = spotifyInput.value.trim();
 
       if (alias) state.hostAlias = alias;
+      if (cbu) state.hostCbu = cbu;
       if (wa) state.hostWhatsapp = wa;
       if (map) state.mapsUrl = map;
       state.firebaseUrl = firebase;
@@ -2136,6 +2160,8 @@
       cloudSaveHostConfig();
       
       document.getElementById('alias-display-val').textContent = state.hostAlias;
+      const cbuDisplaySave = document.getElementById('cbu-display-val');
+      if (cbuDisplaySave) cbuDisplaySave.textContent = state.hostCbu;
       initMap();
       initMapConfirmed();
       updateNoAssistanceWaLink();
@@ -2166,6 +2192,17 @@
         .catch(err => {
           console.error("Error al copiar", err);
           toast("No se pudo copiar el alias");
+        });
+    }
+
+    function copyCbu() {
+      navigator.clipboard.writeText(state.hostCbu)
+        .then(() => {
+          toast("🏀 ¡CBU copiado! Transferí derecho al aro.");
+        })
+        .catch(err => {
+          console.error("Error al copiar", err);
+          toast("No se pudo copiar el CBU");
         });
     }
 
@@ -2519,13 +2556,16 @@
           const configData = await configRes.json();
           if (configData) {
             state.hostAlias = configData.hostAlias || state.hostAlias;
+            state.hostCbu = configData.hostCbu || state.hostCbu;
             state.hostWhatsapp = configData.hostWhatsapp || state.hostWhatsapp;
             state.mapsUrl = configData.mapsUrl || state.mapsUrl;
             state.playlistId = configData.playlistId || state.playlistId;
-            
-            // Actualizar la UI si cambió el alias en caliente
+
+            // Actualizar la UI si cambió el alias o el CBU en caliente
             const aliasDisplay = document.getElementById('alias-display-val');
             if (aliasDisplay) aliasDisplay.textContent = state.hostAlias;
+            const cbuDisplay = document.getElementById('cbu-display-val');
+            if (cbuDisplay) cbuDisplay.textContent = state.hostCbu;
           }
         }
 
@@ -2585,6 +2625,7 @@
       const url = state.firebaseUrl.trim().replace(/\/$/, "");
       const configData = {
         hostAlias: state.hostAlias,
+        hostCbu: state.hostCbu,
         hostWhatsapp: state.hostWhatsapp,
         mapsUrl: state.mapsUrl,
         playlistId: state.playlistId
