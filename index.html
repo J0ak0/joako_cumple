@@ -1237,6 +1237,20 @@
       color: var(--fg-muted);
       line-height: 1.5;
     }
+    /* Orden del layout en landing única */
+    main.wrapper { display: flex; flex-direction: column; }
+    #panel-info { order: 1; }
+    #panel-viaje { order: 2; }
+    #panel-ubicacion { order: 3; }
+    #panel-fotos { order: 4; }
+    #panel-musica { order: 5; }
+    #panel-firmas { order: 6; }
+    #panel-movilidad { order: 7; }
+    #panel-regalos { order: 8; }
+    #panel-menu { order: 9; }
+    #panel-confirmacion { order: 10; }
+    #host-blocks { order: 11; }
+    main.wrapper > footer { order: 12; }
   </style>
 </head>
 <body>
@@ -1485,22 +1499,11 @@
           </div>
         </div>
 
-        <!-- SUB-PANEL 4: ESTADO CONFIRMADO (VOY) - APP DESBLOQUEADA -->
-        <div id="info-sub-confirmed" style="display: none;">
-          <h2 class="panel-title">Asistencia <span>confirmada 🎉</span></h2>
-          
-          <div class="card" style="border: 1px solid var(--green); background: rgba(109, 186, 127, 0.02); animation: fadeUp 0.5s ease;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <div>
-                <div class="card-title" style="color: var(--green); margin-bottom:0.4rem; font-size:1.15rem;">¡Listo, ya estás registrado!</div>
-                <p id="confirmed-status-text" style="font-size: 14px; color: var(--fg-muted);">Confirmaste que vas con 1 persona.</p>
-              </div>
-              <button class="btn-outline" style="padding: 6px 12px; font-size: 11px; flex-shrink:0;" onclick="goToWizardStep('form')">✏️ Modificar</button>
-            </div>
-          </div>
+      </section>
 
-          <!-- CONSEJOS DE VIAJE SEGÚN ORIGEN -->
-          <div class="card" id="confirmed-travel-advice-card" style="border: 1px solid rgba(200, 160, 80, 0.3); background: rgba(200, 160, 80, 0.02); animation: fadeUp 0.5s ease;">
+      <!-- SECCIÓN: CONSEJOS DE VIAJE -->
+      <section class="panel" id="panel-viaje">
+                  <div class="card" id="confirmed-travel-advice-card" style="border: 1px solid rgba(200, 160, 80, 0.3); background: rgba(200, 160, 80, 0.02); animation: fadeUp 0.5s ease;">
             <div class="card-title" style="color: var(--accent); margin-bottom: 0.75rem;">
               🚗 Tu Ruta y Consejos de Viaje
             </div>
@@ -1509,8 +1512,12 @@
             </div>
           </div>
 
-          <!-- DETALLE DEL LUGAR (MAPA) -->
-          <div class="card" style="border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);">
+          
+      </section>
+
+      <!-- SECCIÓN: UBICACIÓN -->
+      <section class="panel" id="panel-ubicacion">
+                  <div class="card" style="border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);">
             <div class="card-title" style="color: var(--accent); margin-bottom: 0.75rem;">
               📍 Ubicación del Evento
             </div>
@@ -1527,8 +1534,12 @@
             </a>
           </div>
 
-          <!-- QUÉ VAMOS A HACER (MENÚ Y DETALLES) -->
-          <div class="card" style="border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);">
+          
+      </section>
+
+      <!-- SECCIÓN: MENÚ -->
+      <section class="panel" id="panel-menu">
+                  <div class="card" style="border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);">
             <div class="card-title" style="color: var(--accent); margin-bottom: 1rem;">
               🥘 Qué vamos a hacer (Menú & Plan)
             </div>
@@ -1587,8 +1598,25 @@
             </div>
           </div>
 
-          <!-- RSVP Stats & List -->
-          <div class="card">
+          
+      </section>
+
+      <!-- SECCIÓN: CONFIRMACIÓN (mi asistencia + lista) -->
+      <section class="panel" id="panel-confirmacion">
+        <h2 class="panel-title">Asistencia <span>confirmada 🎉</span></h2>
+                  
+          <div class="card" style="border: 1px solid var(--green); background: rgba(109, 186, 127, 0.02); animation: fadeUp 0.5s ease;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <div class="card-title" style="color: var(--green); margin-bottom:0.4rem; font-size:1.15rem;">¡Listo, ya estás registrado!</div>
+                <p id="confirmed-status-text" style="font-size: 14px; color: var(--fg-muted);">Confirmaste que vas con 1 persona.</p>
+              </div>
+              <button class="btn-outline" style="padding: 6px 12px; font-size: 11px; flex-shrink:0;" onclick="goToWizardStep('form')">✏️ Modificar</button>
+            </div>
+          </div>
+
+          
+                  <div class="card">
             <div class="card-title">📊 Confirmados del Festejo</div>
             
             <div class="rsvp-stats" style="margin-bottom: 1.5rem;">
@@ -1610,10 +1638,13 @@
               <!-- Dinámico -->
             </div>
           </div>
-        </div>
+        
+      </section>
 
+      <!-- HOST BLOCKS -->
+      <div id="host-blocks">
         <!-- Host Settings Button -->
-        <div class="host-settings-btn" id="host-settings-btn-container" style="display:none;">
+                <div class="host-settings-btn" id="host-settings-btn-container" style="display:none;">
           <button class="btn-outline" style="padding: 6px 12px; font-size:11px;" onclick="toggleHostPanel('info')">⚙️ Configuración de la invitación (Host)</button>
         </div>
 
@@ -1663,7 +1694,9 @@
           
           <button class="btn-primary" onclick="saveHostConfig()">Guardar Configuración</button>
         </div>
-      </section>
+      
+      </div>
+
 
       <!-- PANEL — MÚSICA -->
       <section class="panel" id="panel-musica">
@@ -2257,7 +2290,7 @@
     // --- TABS NAVIGATION ---
     // --- LANDING ÚNICA (sin pestañas) ---
     // Muestra u oculta las secciones que solo aplican una vez confirmada la asistencia.
-    const LANDING_PANEL_IDS = ['panel-musica', 'panel-fotos', 'panel-movilidad', 'panel-regalos', 'panel-firmas'];
+    const LANDING_PANEL_IDS = ['panel-viaje', 'panel-ubicacion', 'panel-fotos', 'panel-musica', 'panel-firmas', 'panel-movilidad', 'panel-regalos', 'panel-menu', 'panel-confirmacion'];
 
     function setLandingPanelsVisible(show) {
       LANDING_PANEL_IDS.forEach(id => {
