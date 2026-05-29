@@ -2308,17 +2308,16 @@
       const stepForm = document.getElementById('info-sub-form');
       const stepMaybe = document.getElementById('info-sub-maybe');
       const stepNo = document.getElementById('info-sub-no');
-      const stepConfirmed = document.getElementById('info-sub-confirmed');
       const hostBtnContainer = document.getElementById('host-settings-btn-container');
 
-      // Ocultar todos
+      // Ocultar todos los sub-pasos del wizard (start/form/maybe/no)
       if (stepStart) stepStart.style.display = 'none';
       if (stepForm) stepForm.style.display = 'none';
       if (stepMaybe) stepMaybe.style.display = 'none';
       if (stepNo) stepNo.style.display = 'none';
-      if (stepConfirmed) stepConfirmed.style.display = 'none';
 
       // Por defecto, ocultar las secciones de la landing (solo se ven al confirmar)
+      // panel-confirmacion forma parte de la landing y se muestra en el paso 'confirmed'.
       setLandingPanelsVisible(false);
 
       const userRsvp = state.rsvps.find(r => r.email === state.currentUserEmail);
@@ -2358,7 +2357,6 @@
         // Sincronizar alias en no-voy
         document.getElementById('alias-clean-karma').textContent = state.hostAlias;
       } else if (step === 'confirmed') {
-        if (stepConfirmed) stepConfirmed.style.display = 'block';
         setLandingPanelsVisible(true);
         hostBtnContainer.style.display = 'block';
 
@@ -2764,8 +2762,8 @@
         cloudSyncInterval = setInterval(async () => {
           await syncWithCloud();
           // Landing única: si el invitado ya confirmó, refrescamos todas las secciones visibles.
-          const confirmedVisible = document.getElementById('info-sub-confirmed');
-          if (confirmedVisible && confirmedVisible.style.display !== 'none') {
+          const confirmedVisible = document.getElementById('panel-confirmacion');
+          if (confirmedVisible && confirmedVisible.classList.contains('active')) {
             updateRsvpCounters();
             renderRsvpList();
             renderSongsList();
