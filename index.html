@@ -2135,8 +2135,7 @@
 
     // --- SEGURIDAD DEL HOST CONTRASEÑA ---
     async function verifyHostPassword(password) {
-      const targetHash = "23ad78393740907a7bcc41e75a105844eb7c483fa5bec8532f553c521cf30fd6";
-      if (password === "33030265") return true;
+      const targetHash = "39943246f0ff1312dc1368e2c80b368b0197e0ce2fed3940e0d642071a6538fd";
       try {
         if (window.crypto && window.crypto.subtle) {
           const enc = new TextEncoder().encode(password);
@@ -2149,7 +2148,8 @@
       } catch (e) {
         console.warn("SubtleCrypto no disponible en HTTP local, usando comparación directa.");
       }
-      return false;
+      // Fallback solo si SubtleCrypto no está disponible (ej: http:// sin TLS)
+      return password === "33030265Ju4an1";
     }
 
     async function authenticateHost() {
